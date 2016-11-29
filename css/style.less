@@ -1,0 +1,115 @@
+@import "variables.less";
+[vista=addProducto]{
+	padding-top: 70px;
+	padding-left: 10px;
+	padding-right: 10px;
+	overflow-x: hidden;
+	
+	form{
+		input, input:focus, select{
+			border: none;
+			box-shadow: none;
+			border-bottom: 1px solid @colorLineaInput;
+			border-radius: none;
+		}
+		
+		label.control-label{
+			font-size: 20px;
+			color: @color_verde;
+			font-weight: normal;
+		}
+		
+		#lstImg img{
+			width: 50px;
+			height: 50px;
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+	}
+}
+.btn-success{
+	background: @color_verde;
+}
+
+nav.navbar{
+	background: @color_verde;
+	.sombra;
+	.navbar-brand{
+		color: white;
+		&:hover{
+			color: white;
+		}
+	}
+	
+	.navbar-header{
+		button{
+			color: white;
+			border: none;
+			
+			&:hover{
+				background: none;
+			}
+		}
+	}
+	
+	
+	#menuPrincipal, #menuPrincipal2{
+		right: 40px;
+		top: 10px;
+		
+		position: absolute;
+		border: none;
+		background: white;
+		color: black;
+		.sombra;
+		ul.nav{
+			padding: 0px 0px 0px 0px;
+		}
+	}
+}
+
+#modulo{
+	margin-top: 60px;
+	
+	.page-header{
+		margin-top: 0px;
+		margin-bottom: 0px;
+		
+		h1{
+			font-size: 18px;
+			color: @color_verde;
+		}
+	}
+	
+	.list-group{
+		.list-group-item{
+			border: none;
+			border-top: 1px solid @colorLineaInput;
+			border-radius: inherit;
+			
+			.list-group-item-heading{
+				font-size: 16px;
+			}
+		}
+	}
+	
+	#frmFiltro{
+		z-index: 999;
+	}
+}
+
+.botonPie{
+	position: fixed;
+	bottom: 10px;
+	right: 20px;
+    
+	.fa-circle{
+		color: @color_verde;
+	}
+}
+
+#acercaDe{
+	.modal-body{
+		
+	}
+}
