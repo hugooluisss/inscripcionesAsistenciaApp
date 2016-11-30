@@ -19,8 +19,14 @@ function reposition(modal) {
 */
 function crearBD(){
 	db.transaction(function(tx){
-		tx.executeSql('CREATE TABLE IF NOT EXISTS trabajador (num_personal integer primary key, nombre text, fotografia, idPlantel, nombrePlantel)', [], function(){
-			console.log("tabla trabajador creada");
+		tx.executeSql('DROP TABLE IF NOT EXISTS trabajador');
+		
+		tx.executeSql('CREATE TABLE IF NOT EXISTS grupo (idGrupo integer primary key, nombre text, sede text, encargado text)', [], function(){
+			console.log("tabla evento creada");
+		}, errorDB);
+		
+		tx.executeSql('CREATE TABLE IF NOT EXISTS participante (num_personal integer primary key, grupo integer, nombre text, fotografia text, idPlantel integer, nombrePlantel text, plaza text, especialidad text)', [], function(){
+			console.log("tabla participante creada");
 		}, errorDB);
 	});
 }

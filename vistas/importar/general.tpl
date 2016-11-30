@@ -28,3 +28,13 @@
 		</span>
 	</a>
 </div>
+
+<div view="consola">
+	<div class="container" id="log"></div>
+	<a href="#" action="show" vista="grupos" class="botonPie">
+		<span class="fa-stack fa-2x in">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+</div>

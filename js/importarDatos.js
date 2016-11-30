@@ -72,6 +72,12 @@ TEvento = function(){
 					});
 					
 					item.click(function(){
+						alertify.confirm("<b>Estas solicitando el importar los datos de este</b> ¿Seguro?<br /> <small>Si existen datos de este curso guardados en el dispositivo, estos serán eliminados para cargar los nuevos</small>", function (e) {
+							if (e) {
+								self.adminVistas("consola");
+								self.getParticipantes(grupo);
+							}
+						});
 					});
 					
 					plantilla.append(item);
@@ -108,5 +114,41 @@ TEvento = function(){
 			$("[view=" + mostrar + "]").show();
 		else
 			console.log("Error en la vista");
+	}
+	
+	this.getParticipantes = function(grupo){
+		$("#log").html("Iniciando la solicitud de datos");
+		addLog("------");
+		function addLog(msg){
+			$("#log").append($('<p>' + msg + '</p>'));
+		}
+		
+		$.post(server + "cAdministracionEventos", {
+			"movil": true,
+			"action": "inscritosGrupos",
+			"grupo": grupo.idGrupo
+		}, function(datos){
+			addLog('Se recibieron ' + datos.length + ' registros de inscripción desde el servidor');
+			
+			db.transaction(function(tx){
+				tx.executeSql("delete from grupo where idEvento = ?", [grupo.idGrupo], function(tx, res){
+					addLog("Se eliminó el grupo de la base de datos");
+					tx.executeSql("insert into grupo(idGrupo, nombre, sede, encargado) values (?, ?, ?, ?)", [grupo.idGrupo, grupo.nombre, grupo.sede, grupo.encargado], function(tx, res){
+						addLog("Nuevo grupo creado");
+					});
+					
+					tx.executeSql("delete from participante where idGrupo = ?", [grupo.idGrupo], function(tx, res){
+						addLog("Se borraron a todos los participantes");
+						
+						$.each(datos, function(i, participante){
+							tx.executeSql("insert into participante (num_personal, grupo, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.nombre, '', participante.idPlantel, participante.nombrePlantel, participante.plaza, participante.especialidad], function(tx, res){
+								addLog(participante.nombre + " agregado a la base");
+							});
+						});
+					});
+				});
+			});
+			
+		}, "json");
 	}
 }
