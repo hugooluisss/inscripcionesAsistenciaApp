@@ -17,15 +17,17 @@ function reposition(modal) {
 * Crea la base de datos
 *
 */
-function crearBD(){
+function crearBD(db){
 	db.transaction(function(tx){
-		tx.executeSql('DROP TABLE IF NOT EXISTS trabajador');
+		//tx.executeSql('DROP TABLE IF EXISTS trabajador');
+		//tx.executeSql('DROP TABLE IF EXISTS grupo');
+		//tx.executeSql('DROP TABLE IF EXISTS participante');
 		
 		tx.executeSql('CREATE TABLE IF NOT EXISTS grupo (idGrupo integer primary key, nombre text, sede text, encargado text)', [], function(){
-			console.log("tabla evento creada");
+			console.log("tabla grupo creada");
 		}, errorDB);
 		
-		tx.executeSql('CREATE TABLE IF NOT EXISTS participante (num_personal integer primary key, grupo integer, nombre text, fotografia text, idPlantel integer, nombrePlantel text, plaza text, especialidad text)', [], function(){
+		tx.executeSql('CREATE TABLE IF NOT EXISTS participante (idParticipante integer primary key autoincrement, num_personal integer, idGrupo integer REFERENCES grupo(idGrupo) on update cascade on delete cascade, nombre text, fotografia text, idPlantel integer, nombrePlantel text, plaza text, especialidad text)', [], function(){
 			console.log("tabla participante creada");
 		}, errorDB);
 	});

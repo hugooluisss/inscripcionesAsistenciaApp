@@ -123,6 +123,7 @@ TEvento = function(){
 			$("#log").append($('<p>' + msg + '</p>'));
 		}
 		
+		alertify.log("Se está realizando una conexión a oficinas centrales, este proceso puede tardar dependiendo de tu conexión a internet");
 		$.post(server + "cAdministracionEventos", {
 			"movil": true,
 			"action": "inscritosGrupos",
@@ -131,20 +132,25 @@ TEvento = function(){
 			addLog('Se recibieron ' + datos.length + ' registros de inscripción desde el servidor');
 			
 			db.transaction(function(tx){
-				tx.executeSql("delete from grupo where idEvento = ?", [grupo.idGrupo], function(tx, res){
+				tx.executeSql("delete from grupo where idGrupo = ?", [grupo.idGrupo], function(tx, res){
 					addLog("Se eliminó el grupo de la base de datos");
 					tx.executeSql("insert into grupo(idGrupo, nombre, sede, encargado) values (?, ?, ?, ?)", [grupo.idGrupo, grupo.nombre, grupo.sede, grupo.encargado], function(tx, res){
 						addLog("Nuevo grupo creado");
-					}, errorDB);
-					
-					tx.executeSql("delete from participante where idGrupo = ?", [grupo.idGrupo], function(tx, res){
-						addLog("Se borraron a todos los participantes");
 						
+						var cont = 0;
 						$.each(datos, function(i, participante){
-							tx.executeSql("insert into participante (num_personal, grupo, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.nombre, '', participante.idPlantel, participante.nombrePlantel, participante.plaza, participante.especialidad], function(tx, res){
-								addLog(participante.nombre + " agregado a la base");
+							tx.executeSql("insert into participante (num_personal, idGrupo, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.nombreTrabajador, '', participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad], function(tx, res){
+								addLog(participante.nombreTrabajador + " agregado a la base");
+								cont++;
+								if (cont >= datos.length){
+									addLog("Proceso terminado");
+									addLog("----");
+									
+									alertify.success("El proceso de importación a terminado para este grupo");
+								}
 							}, errorDB);
 						});
+						
 					}, errorDB);
 				}, errorDB);
 			});

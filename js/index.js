@@ -37,14 +37,14 @@ var app = {
 	// function, we must explicitly call 'app.receivedEvent(...);'
 	onDeviceReady: function() {
 		//Esto es para web
-		
 		try{
 			//db = openDatabase({name: "inter.db"});
 			db = window.sqlitePlugin.openDatabase({name: 'intersem.db', location: 1, androidDatabaseImplementation: 2});
 			console.log("Conexión desde phonegap OK");
 			crearBD(db);
 		}catch(err){
-			db = window.openDatabase("inter.db", "1.0", "Just a Dummy DB", 200000);
+			console.log("No se pudo crear la base de datos");
+			db = window.openDatabase("intersem.db", "1.0", "Just a Dummy DB", 200000);
 			crearBD(db);
 			console.log("Se inicio la conexión a la base para web");
 		}
@@ -62,8 +62,12 @@ var app = {
 			var plantilla = new TEvento;
 			plantilla.getEventos();
 		});
-        
-		$("[vista=addProducto]").hide();
+		
+		$("[action=viewPaseLista]").click(function(){
+			clickMenu();
+			var plantilla = new TPaseLista;
+			plantilla.getGrupos();
+		});
 	}
 };
 
