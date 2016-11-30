@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var server = "http://localhost/inscripcionesBootstrap/"
+var server = "http://192.168.2.1/inscripcionesBootstrap/"
 var db = null;
 
 var app = {
