@@ -34,9 +34,7 @@
 		<!-- Plugins -->  
 		<!-- Core plugins -->  
 		<!-- Third party plugins -->  
-		<!-- A list of available plugins are available at https://build.phonegap.com/plugins -->  
-
-		<!--<plugin name="com.phonegap.plugins.barcodescanner" spec="2.0.0" source="pgb" />-->
+		<!-- A list of available plugins are available at https://build.phonegap.com/plugins -->
 		<plugin name="cordova-plugin-file" source="npm"/>
 		<plugin name="cordova-plugin-geolocation" source="npm"/>
 		<plugin name="cordova-plugin-network-information" source="npm"/>
