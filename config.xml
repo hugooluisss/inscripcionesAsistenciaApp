@@ -5,8 +5,8 @@
 		id    = "com.iebo.evainter"  
 		version  = "1.0.0">  
 		
-		<name>Evaluación intersemestrales</name>  
-		<description>Evaluación de cursos intersemestrales</description>  
+		<name>Evaluacion intersemestrales</name>  
+		<description>Evaluacion de cursos intersemestrales</description>  
 		<author href="http://www.facebook.com/huguntuPrime" email="hugooluisss@gmail.com"></author>
 		<!--  
 			If you do not want any permissions to be added to your app, add the  
@@ -36,10 +36,10 @@
 		<!-- Third party plugins -->  
 		<!-- A list of available plugins are available at https://build.phonegap.com/plugins -->
 		<plugin name="cordova-plugin-file" source="npm"/>
-		<plugin name="cordova-plugin-geolocation" source="npm"/>
 		<plugin name="cordova-plugin-network-information" source="npm"/>
 		<plugin name="cordova-plugin-sqlite" source="npm"/>
 		<plugin name="cordova-plugin-whitelist" source="npm"/>
+		
 		<!-- Define app icon for each platform. -->  
 		<icon src="icon.png" />  
 		<icon src="res/icon/android/icon-36-ldpi.png"  gap:platform="android"  gap:qualifier="ldpi" />  
