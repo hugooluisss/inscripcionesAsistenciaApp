@@ -135,7 +135,7 @@ TEvento = function(){
 					addLog("Se eliminó el grupo de la base de datos");
 					tx.executeSql("insert into grupo(idGrupo, nombre, sede, encargado) values (?, ?, ?, ?)", [grupo.idGrupo, grupo.nombre, grupo.sede, grupo.encargado], function(tx, res){
 						addLog("Nuevo grupo creado");
-					});
+					}, errorDB);
 					
 					tx.executeSql("delete from participante where idGrupo = ?", [grupo.idGrupo], function(tx, res){
 						addLog("Se borraron a todos los participantes");
@@ -143,10 +143,10 @@ TEvento = function(){
 						$.each(datos, function(i, participante){
 							tx.executeSql("insert into participante (num_personal, grupo, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.nombre, '', participante.idPlantel, participante.nombrePlantel, participante.plaza, participante.especialidad], function(tx, res){
 								addLog(participante.nombre + " agregado a la base");
-							});
+							}, errorDB);
 						});
-					});
-				});
+					}, errorDB);
+				}, errorDB);
 			});
 			
 		}, "json");
