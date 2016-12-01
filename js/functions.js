@@ -25,10 +25,14 @@ function crearBD(db){
 		
 		tx.executeSql('CREATE TABLE IF NOT EXISTS grupo (idGrupo integer primary key, nombre text, sede text, encargado text)', [], function(){
 			console.log("tabla grupo creada");
-		}, errorDB);
+			tx.executeSql('CREATE TABLE IF NOT EXISTS participante (idParticipante integer primary key autoincrement, num_personal integer, idGrupo integer REFERENCES grupo(idGrupo) on update cascade on delete cascade, nombre text, fotografia text, idPlantel integer, nombrePlantel text, plaza text, especialidad text)', [], function(){
+				console.log("tabla participante creada");
+				
+				tx.executeSql('CREATE TABLE IF NOT EXISTS asistencia(fecha text, idParticipante integer REFERENCES participante(idParticipante) on update cascade on delete cascade, primary key(fecha, idParticipante))', [], function(){
+					console.log("tabla asistencia creada");
+				}, errorDB);
 		
-		tx.executeSql('CREATE TABLE IF NOT EXISTS participante (idParticipante integer primary key autoincrement, num_personal integer, idGrupo integer REFERENCES grupo(idGrupo) on update cascade on delete cascade, nombre text, fotografia text, idPlantel integer, nombrePlantel text, plaza text, especialidad text)', [], function(){
-			console.log("tabla participante creada");
+			}, errorDB);
 		}, errorDB);
 	});
 }
@@ -41,7 +45,7 @@ function crearBD(db){
 */
 
 function errorDB(tx, res){
-	console.log("Error: " + res.message);
+	console.log(tx);
 }
 
 /*

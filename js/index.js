@@ -63,6 +63,10 @@ var app = {
 			plantilla.getEventos();
 		});
 		
+		$("[action=viewJustificaciones]").click(function(){
+			$("#winJustificaciones").modal();
+		})
+		
 		$("[action=viewPaseLista]").click(function(){
 			clickMenu();
 			var plantilla = new TPaseLista;
