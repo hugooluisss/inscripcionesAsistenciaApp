@@ -44,7 +44,7 @@
 					
 					<div class="form-group row">
 						<label for="txtFecha" class="label-control col-xs-4">Fecha:</label>
-						<div class="col-xs-4">
+						<div class="col-xs-6">
 							<input type="email" class="form-control" id="txtFechaJustificacion" readonly="true">
 						</div>
 					</div>
