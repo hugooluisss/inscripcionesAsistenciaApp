@@ -70,12 +70,12 @@ var app = {
 	}
 };
 
-//app.initialize();
+app.initialize();
 
 function clickMenu(){
 	$("#menuPrincipal").removeClass("in");
 }
 
 $(document).ready(function(){
-	app.onDeviceReady();
+	//app.onDeviceReady();
 });
