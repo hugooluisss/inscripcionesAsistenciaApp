@@ -32,11 +32,35 @@
 				<h4 class="modal-title">Justificaciones</h4>
 			</div>
 			<div class="modal-body">
-				<div class="form-group">
-					<label for="txtFecha">Fecha:</label>
-					<input type="email" class="form-control" id="txtFecha">
-				</div>
-				<input type="hidden" id="participante" value="" />
+					<div class="form-group row">
+						<div class="col-xs-6 text-center" id="getFoto">
+							<span class="fa-stack fa-3x">
+								<i class="fa fa-square fa-stack-2x"></i>
+								<i class="fa fa-camera fa-stack-1x fa-inverse"></i>
+							</span>
+						</div>
+						<div class="col-xs-6" id="vistaPrevia"></div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="txtFecha" class="label-control col-xs-4">Fecha:</label>
+						<div class="col-xs-4">
+							<input type="email" class="form-control" id="txtFechaJustificacion" readonly="true">
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="txtFecha" class="label-control col-xs-4">Motivo:</label>
+						<div class="col-xs-8">
+							<textarea id="txtDescripcion" class="form-control"></textarea>
+						</div>
+					</div>
+					
+					
+					<input type="hidden" id="participante" value="" />
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" id="btnGuardar">Guardar</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

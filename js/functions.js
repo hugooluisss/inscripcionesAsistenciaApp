@@ -31,6 +31,10 @@ function crearBD(db){
 				tx.executeSql('CREATE TABLE IF NOT EXISTS asistencia(fecha text, idParticipante integer REFERENCES participante(idParticipante) on update cascade on delete cascade, primary key(fecha, idParticipante))', [], function(){
 					console.log("tabla asistencia creada");
 				}, errorDB);
+				
+				tx.executeSql('CREATE TABLE IF NOT EXISTS justificacion(fecha text REFERENCES asistencia(fecha) on update cascade on delete cascade, idParticipante integer REFERENCES asistencia(idParticipante) on update cascade on delete cascade, motivo text, comprobante text, primary key(fecha, idParticipante))', [], function(){
+					console.log("tabla justificacion creada");
+				}, errorDB);
 		
 			}, errorDB);
 		}, errorDB);
@@ -45,7 +49,7 @@ function crearBD(db){
 */
 
 function errorDB(tx, res){
-	console.log(tx);
+	console.log(res);
 }
 
 /*
