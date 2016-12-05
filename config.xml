@@ -3,7 +3,7 @@
 	<widget xmlns   = "http://www.w3.org/ns/widgets"  
 		xmlns:gap = "http://phonegap.com/ns/1.0"  
 		id    = "com.iebo.evainter"  
-		version  = "1.0.0">  
+		version  = "1.0.1">  
 		
 		<name>Evaluacion intersemestrales</name>  
 		<description>Evaluacion de cursos intersemestrales</description>  
