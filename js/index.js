@@ -70,8 +70,6 @@ var app = {
 	}
 };
 
-app.initialize();
-
 function clickMenu(){
 	$("#menuPrincipal").removeClass("in");
 }
@@ -79,3 +77,5 @@ function clickMenu(){
 $(document).ready(function(){
 	//app.onDeviceReady();
 });
+
+app.initialize();
