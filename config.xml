@@ -5,7 +5,7 @@
 		id    = "com.iebo.evainter"  
 		version  = "1.0.1">  
 		
-		<name>Evaluacion intersemestrales</name>  
+		<name>Intersemestrales</name>  
 		<description>Evaluacion de cursos intersemestrales</description>  
 		<author href="https://www.facebook.com/huguntuPrime" email="hugooluisss@gmail.com"></author>
 		<!--  
