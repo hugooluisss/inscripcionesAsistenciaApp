@@ -75,12 +75,13 @@ TPaseLista = function(){
 		
 		
 		win = $("#winJustificaciones");
-		$("#winJustificaciones").on('show.bs.modal', function () {
+		$("#winJustificaciones").on('shown.bs.modal', function () {
 			win.find("#vistaPrevia").find("img").remove();
 			win.find("#txtMotivo").val("");
 			
 			db.transaction(function(tx){
 				tx.executeSql("select * from justificacion where fecha = ? and idParticipante = ?", [$("#txtFechaJustificacion").val(), $("#participante").val()], function(tx, res){
+					console.log(res.rows.length);
 					if (res.rows.length > 0){
 						if (res.rows.item(0).comprobante != null && res.rows.item(0).comprobante != ''){
 							win.find("#vistaPrevia").find("img").remove();
