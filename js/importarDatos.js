@@ -152,6 +152,7 @@ TEvento = function(){
 			addLog('Se recibieron ' + datos.length + ' registros de inscripción desde el servidor');
 			
 			db.transaction(function(tx){
+				console.log("Grupo: " + grupo.idGrupo);
 				tx.executeSql("delete from grupo where idGrupo = ?", [grupo.idGrupo], function(tx, res){
 					addLog("Se eliminó el grupo de la base de datos");
 					tx.executeSql("insert into grupo(idGrupo, nombre, sede, encargado) values (?, ?, ?, ?)", [grupo.idGrupo, grupo.nombre, grupo.sede, grupo.encargado], function(tx, res){
