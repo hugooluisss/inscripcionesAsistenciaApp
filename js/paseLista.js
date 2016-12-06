@@ -79,7 +79,6 @@ TPaseLista = function(){
 			win.find("#vistaPrevia").find("img").remove();
 			win.find("#txtMotivo").val("");
 			
-			
 			db.transaction(function(tx){
 				tx.executeSql("select * from justificacion where fecha = ? and idParticipante = ?", [$("#txtFechaJustificacion").val(), $("#participante").val()], function(tx, res){
 					if (res.rows.length > 0){
@@ -89,7 +88,10 @@ TPaseLista = function(){
 						}
 						
 						win.find("#txtMotivo").val(res.rows.item(0).motivo);
-					}
+						
+						console.info("Registro encontrado");
+					}else
+						console.info("Registro no encontrado");
 					
 				}, errorDB);
 			});
