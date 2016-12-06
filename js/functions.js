@@ -25,6 +25,7 @@ function crearBD(db, borrar = false){
 			tx.executeSql('DROP TABLE IF EXISTS asistencia');
 			tx.executeSql('DROP TABLE IF EXISTS justificacion');
 		}
+		tx.executeSql("PRAGMA foreign_keys=ON;", [], function(){}, errorDB);
 		
 		tx.executeSql('CREATE TABLE IF NOT EXISTS grupo (idGrupo integer primary key, nombre text, sede text, encargado text)', [], function(){
 			console.log("tabla grupo creada");
