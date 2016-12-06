@@ -86,7 +86,7 @@ TPaseLista = function(){
 						console.log(res.rows.item(0).comprobante);
 						if (res.rows.item(0).comprobante != null && res.rows.item(0).comprobante != ''){
 							win.find("#vistaPrevia").find("img").remove();
-							win.find("#vistaPrevia").append($('<img class="img-responsive" src="' + res.rows.item(0).comprobante + '" />'));
+							win.find("#vistaPrevia").append($('<img class="img-responsive" src="data:image/jpeg;base64,' + res.rows.item(0).comprobante + '" />'));
 						}
 						
 						win.find("#txtMotivo").val(res.rows.item(0).motivo);
@@ -105,7 +105,7 @@ TPaseLista = function(){
 			}else{
 				db.transaction(function(tx){
 					tx.executeSql("select * from justificacion where fecha = ? and idParticipante = ?", [$("#txtFechaJustificacion").val(), $("#participante").val()], function(tx, res){
-						if (res.rows.length > 0)
+						if (res.rows.length == 0)
 							tx.executeSql("insert into justificacion(fecha, idParticipante, motivo, comprobante) values (?, ?, ?, ?)", [$("#txtFechaJustificacion").val(), $("#participante").val(), win.find("#txtMotivo").val(), win.find("#vistaPrevia").find("img").attr("fuente")], function(tx, res){
 								alertify.success("Justificación guardada");
 								win.modal("hide");
