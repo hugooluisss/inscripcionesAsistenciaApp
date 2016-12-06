@@ -103,14 +103,18 @@ TPaseLista = function(){
 				alertify.error("Se debe de agregar una foto del justificante");
 			}else{
 				db.transaction(function(tx){
+					console.log($("#txtFechaJustificacion").val() + " " + $("#participante").val());
+					
 					tx.executeSql("select * from justificacion where fecha = ? and idParticipante = ?", [$("#txtFechaJustificacion").val(), $("#participante").val()], function(tx, res){
 						if (res.rows.length > 0)
 							tx.executeSql("insert into justificacion(fecha, idParticipante, motivo, comprobante) values (?, ?, ?, ?)", [$("#txtFechaJustificacion").val(), $("#participante").val(), win.find("#txtMotivo").val(), win.find("#vistaPrevia").find("img").attr("fuente")], function(tx, res){
 								alertify.success("Justificación guardada");
+								win.modal("hide");
 							}, errorDB);
 						else
 							tx.executeSql("update justificacion set motivo = ?, comprobante = ? where idParticipante = ? and fecha = ?", [win.find("#txtMotivo").val(), win.find("#vistaPrevia").find("img").attr("fuente"), $("#participante").val(), $("#txtFechaJustificacion").val()], function(tx, res){
 								alertify.success("Justificación guardada");
+								win.modal("hide");
 							}, errorDB);
 					}, errorDB);
 				});
