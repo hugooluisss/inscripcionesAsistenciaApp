@@ -17,12 +17,14 @@ function reposition(modal) {
 * Crea la base de datos
 *
 */
-function crearBD(db){
+function crearBD(db, borrar = false){
 	db.transaction(function(tx){
-		//tx.executeSql('DROP TABLE IF EXISTS grupo');
-		//tx.executeSql('DROP TABLE IF EXISTS participante');
-		tx.executeSql('DROP TABLE IF EXISTS asistencia');
-		tx.executeSql('DROP TABLE IF EXISTS justificacion');
+		if (borrar){
+			tx.executeSql('DROP TABLE IF EXISTS grupo');
+			tx.executeSql('DROP TABLE IF EXISTS participante');
+			tx.executeSql('DROP TABLE IF EXISTS asistencia');
+			tx.executeSql('DROP TABLE IF EXISTS justificacion');
+		}
 		
 		tx.executeSql('CREATE TABLE IF NOT EXISTS grupo (idGrupo integer primary key, nombre text, sede text, encargado text)', [], function(){
 			console.log("tabla grupo creada");

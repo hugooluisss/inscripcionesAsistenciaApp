@@ -67,6 +67,13 @@ var app = {
 			clickMenu();
 			var plantilla = new TPaseLista;
 		});
+		
+		$("[action=viewConfiguracion]").click(function(){
+			clickMenu();
+			var plantilla = new TConfiguracion;
+			
+			plantilla.getPlantilla();
+		});
 	}
 };
 
@@ -75,7 +82,7 @@ function clickMenu(){
 }
 
 $(document).ready(function(){
-	//app.onDeviceReady();
+	app.onDeviceReady();
 });
 
-app.initialize();
+//app.initialize();

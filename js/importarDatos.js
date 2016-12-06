@@ -19,34 +19,54 @@ TEvento = function(){
 	});
 	
 	this.getEventos = function(){
-		$.post(server + "listaEventos",{
-			"movil": true
-		}, function(resp){
-			self.adminVistas("eventos");
-			
-			$("[action=show]").click(function(){
-				self.adminVistas($(this).attr("vista"));
-			});
-			
-			var plantilla = $("#modulo").find("[view=eventos]").find(".list-group");
-			
-			if (resp.length > 0){
-				$.each(resp, function(i, evento){
-					var item = self.itemEvento.clone();
-					$.each(evento, function(campo, valor){
-						item.find("[campo=" + campo + "]").text(valor);
-					});
-					
-					item.click(function(){
-						self.getGrupos(evento);
-					});
-					
-					plantilla.append(item);
+		var traerDatos = true;
+		switch(navigator.connection.type){
+			case Connection.UNKNOWN:
+				alertify.error("Tu conexión a internet no ha sido identificada, ¿estás conectado a internet?");
+				traerDatos = false;
+			break;
+			case Connection.ETHERNET: case Connection.WIFI:
+			break;
+			case Connection.CELL_2G: case Connection.CELL_3G: case Connection.CELL_4G: case Connection.CELL:
+				alertify.log("Estás conectado por tu red de datos, te sugerimos conectarte a una red wifi para evitar el consumo de datos");
+			break;
+			case Connection.NONE:
+				alertify.error("Tu dispositivo no está conectado a internet, no se puede seguir ");
+				traerDatos = false;
+			break;
+		}
+		
+		
+		if (traerDatos){
+			$.post(server + "listaEventos",{
+				"movil": true
+			}, function(resp){
+				self.adminVistas("eventos");
+				
+				$("[action=show]").click(function(){
+					self.adminVistas($(this).attr("vista"));
 				});
 				
-			}else
-				plantilla.append("<p>Sin datos disponibles</p>");
-		}, "json");
+				var plantilla = $("#modulo").find("[view=eventos]").find(".list-group");
+				
+				if (resp.length > 0){
+					$.each(resp, function(i, evento){
+						var item = self.itemEvento.clone();
+						$.each(evento, function(campo, valor){
+							item.find("[campo=" + campo + "]").text(valor);
+						});
+						
+						item.click(function(){
+							self.getGrupos(evento);
+						});
+						
+						plantilla.append(item);
+					});
+					
+				}else
+					plantilla.append("<p>Sin datos disponibles</p>");
+			}, "json");
+		}
 	}
 	
 	

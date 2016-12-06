@@ -50,9 +50,9 @@
 					</div>
 					
 					<div class="form-group row">
-						<label for="txtFecha" class="label-control col-xs-4">Motivo:</label>
+						<label for="txtMotivo" class="label-control col-xs-4">Motivo:</label>
 						<div class="col-xs-8">
-							<textarea id="txtDescripcion" class="form-control"></textarea>
+							<textarea id="txtMotivo" class="form-control"></textarea>
 						</div>
 					</div>
 					
