@@ -19,9 +19,10 @@ function reposition(modal) {
 */
 function crearBD(db){
 	db.transaction(function(tx){
-		//tx.executeSql('DROP TABLE IF EXISTS trabajador');
 		//tx.executeSql('DROP TABLE IF EXISTS grupo');
 		//tx.executeSql('DROP TABLE IF EXISTS participante');
+		tx.executeSql('DROP TABLE IF EXISTS asistencia');
+		tx.executeSql('DROP TABLE IF EXISTS justificacion');
 		
 		tx.executeSql('CREATE TABLE IF NOT EXISTS grupo (idGrupo integer primary key, nombre text, sede text, encargado text)', [], function(){
 			console.log("tabla grupo creada");
@@ -32,7 +33,7 @@ function crearBD(db){
 					console.log("tabla asistencia creada");
 				}, errorDB);
 				
-				tx.executeSql('CREATE TABLE IF NOT EXISTS justificacion(fecha text REFERENCES asistencia(fecha) on update cascade on delete cascade, idParticipante integer REFERENCES asistencia(idParticipante) on update cascade on delete cascade, motivo text, comprobante text, primary key(fecha, idParticipante))', [], function(){
+				tx.executeSql('CREATE TABLE IF NOT EXISTS justificacion(fecha text, idParticipante integer REFERENCES participante(idParticipante) on update cascade on delete cascade, motivo text, comprobante blob, primary key(fecha, idParticipante))', [], function(){
 					console.log("tabla justificacion creada");
 				}, errorDB);
 		
