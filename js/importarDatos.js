@@ -152,7 +152,13 @@ TEvento = function(){
 			addLog('Se recibieron ' + datos.length + ' registros de inscripción desde el servidor');
 			
 			db.transaction(function(tx){
-				tx.executeSql("delete from participante where idGrupo = ?", [grupo.idGrupo], function(tx, res){
+				tx.executeSql("select idParticipante from asistencia where idGrupo = ?", [grupo.idGrupo], function(tx, res){
+					for(var i = 0 ; i == res.rows.length ; i++){
+						tx.executeSql("delete from asistencia where idParticipante = ?", [res.rows.item(i).idParticipante]);
+						tx.executeSql("delete from justificacion where idParticipante = ?", [res.rows.item(i).idParticipante]);
+						tx.executeSql("delete from participante where idParticipante = ?", [res.rows.item(i).idParticipante]);
+					}
+					
 					tx.executeSql("delete from grupo where idGrupo = ?", [grupo.idGrupo], function(tx, res){
 						addLog("Se eliminó el grupo de la base de datos");
 						tx.executeSql("insert into grupo(idGrupo, nombre, sede, encargado) values (?, ?, ?, ?)", [grupo.idGrupo, grupo.nombre, grupo.sede, grupo.encargado], function(tx, res){
