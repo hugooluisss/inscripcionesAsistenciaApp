@@ -152,7 +152,7 @@ TEvento = function(){
 			addLog('Se recibieron ' + datos.length + ' registros de inscripción desde el servidor');
 			
 			db.transaction(function(tx){
-				tx.executeSql("select idParticipante from asistencia where idGrupo = ?", [grupo.idGrupo], function(tx, res){
+				tx.executeSql("select idParticipante from participante where idGrupo = ?", [grupo.idGrupo], function(tx, res){
 					for(var i = 0 ; i == res.rows.length ; i++){
 						tx.executeSql("delete from asistencia where idParticipante = ?", [res.rows.item(i).idParticipante]);
 						tx.executeSql("delete from justificacion where idParticipante = ?", [res.rows.item(i).idParticipante]);
