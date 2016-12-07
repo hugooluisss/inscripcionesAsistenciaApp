@@ -17,7 +17,7 @@
 			</div>
 			<div class="col-xs-6 pull-right">
 				<span class="checkbox" style="margin-right: 10px;">
-					<label><input type="checkbox" value="">Asistió</label>  
+					<label><input type="checkbox" value="" idParticipante="">Asistió</label>  
 				</span>
 			</div>
 		</div>

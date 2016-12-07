@@ -20,20 +20,25 @@ TEvento = function(){
 	
 	this.getEventos = function(){
 		var traerDatos = true;
-		switch(navigator.connection.type){
-			case Connection.UNKNOWN:
-				alertify.error("Tu conexión a internet no ha sido identificada, ¿estás conectado a internet?");
-				traerDatos = false;
-			break;
-			case Connection.ETHERNET: case Connection.WIFI:
-			break;
-			case Connection.CELL_2G: case Connection.CELL_3G: case Connection.CELL_4G: case Connection.CELL:
-				alertify.log("Estás conectado por tu red de datos, te sugerimos conectarte a una red wifi para evitar el consumo de datos");
-			break;
-			case Connection.NONE:
-				alertify.error("Tu dispositivo no está conectado a internet, no se puede seguir ");
-				traerDatos = false;
-			break;
+		
+		try{
+			switch(navigator.connection.type){
+				case Connection.UNKNOWN:
+					alertify.error("Tu conexión a internet no ha sido identificada, ¿estás conectado a internet?");
+					traerDatos = false;
+				break;
+				case Connection.ETHERNET: case Connection.WIFI:
+				break;
+				case Connection.CELL_2G: case Connection.CELL_3G: case Connection.CELL_4G: case Connection.CELL:
+					alertify.log("Estás conectado por tu red de datos, te sugerimos conectarte a una red wifi para evitar el consumo de datos");
+				break;
+				case Connection.NONE:
+					alertify.error("Tu dispositivo no está conectado a internet, no se puede seguir ");
+					traerDatos = false;
+				break;
+			}
+		}catch(e){
+			console.log(e);
 		}
 		
 		
@@ -153,7 +158,7 @@ TEvento = function(){
 			
 			db.transaction(function(tx){
 				tx.executeSql("select idParticipante from participante where idGrupo = ?", [grupo.idGrupo], function(tx, res){
-					for(var i = 0 ; i == res.rows.length ; i++){
+					for(var i = 0 ; i < res.rows.length ; i++){
 						tx.executeSql("delete from asistencia where idParticipante = ?", [res.rows.item(i).idParticipante]);
 						tx.executeSql("delete from justificacion where idParticipante = ?", [res.rows.item(i).idParticipante]);
 						tx.executeSql("delete from participante where idParticipante = ?", [res.rows.item(i).idParticipante]);

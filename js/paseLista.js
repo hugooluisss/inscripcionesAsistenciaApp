@@ -43,9 +43,15 @@ TPaseLista = function(){
 					console.log("Total de asistencias registradas: " + res.rows.length);
 					var chk = null;
 					for (i = 0 ; i < res.rows.length ; i++){
-						chk = $("#modulo").find("#lstParticipantes").find("[idParticipante=" + res.rows.item(i).idParticipante +"]");
-						chk.prop("checked", true);
-						chk.parent().parent().parent().parent().find("[action=justificar]").hide();
+						chk = $("#modulo").find("#lstParticipantes").find("[idParticipante=" + res.rows.item(i).idParticipante + "]");
+						if (chk.length != 0){
+							chk.prop("checked", true);
+							chk.parent().parent().parent().parent().find("[action=justificar]").hide();
+							console.info(res.rows.item(i));
+						}else{
+							tx.executeSql("delete from asistencia where idParticipante = ? and fecha = ?", [res.rows.item(i).idParticipante, fecha]);
+							console.info("No se encontró a un participante en la lista, el registro fue borrado");
+						}
 					}
 				});
 			}, errorDB);
@@ -132,12 +138,12 @@ TPaseLista = function(){
 					});
 					
 					item.attr("idGrupo", res.rows.item(i).idGrupo);
-					$("#grupo").val(res.rows.item(i).idGrupo);
 					
 					item.click(function(){
 						var item = $(this);
 						self.adminVistas("listas");
 						self.getParticipantes(item.attr("idGrupo"));
+						$("#grupo").val(item.attr("idGrupo"));
 					});
 					
 					plantilla.append(item);
@@ -147,6 +153,7 @@ TPaseLista = function(){
 	}
 	
 	this.getParticipantes = function(grupo){
+		console.info("Grupo: " + grupo);
 		db.transaction(function(tx){
 			alertify.log("Obteniendo la lista de participantes");
 			tx.executeSql("select * from participante where idGrupo = ? order by nombre", [grupo], function(tx, res){
@@ -180,7 +187,8 @@ TPaseLista = function(){
 										
 										el.parent().parent().parent().parent().find("[action=justificar]").hide();
 										
-									}, function(){
+									}, function(tx, res){
+										console.log(res);
 										el.prop("checked", false);
 										alertify.error("Error al registrar la asistencia");
 									});
