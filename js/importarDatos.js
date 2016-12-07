@@ -152,26 +152,27 @@ TEvento = function(){
 			addLog('Se recibieron ' + datos.length + ' registros de inscripción desde el servidor');
 			
 			db.transaction(function(tx){
-				console.log("Grupo: " + grupo.idGrupo);
-				tx.executeSql("delete from grupo where idGrupo = ?", [grupo.idGrupo], function(tx, res){
-					addLog("Se eliminó el grupo de la base de datos");
-					tx.executeSql("insert into grupo(idGrupo, nombre, sede, encargado) values (?, ?, ?, ?)", [grupo.idGrupo, grupo.nombre, grupo.sede, grupo.encargado], function(tx, res){
-						addLog("Nuevo grupo creado");
-						
-						var cont = 0;
-						$.each(datos, function(i, participante){
-							tx.executeSql("insert into participante (num_personal, idGrupo, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.nombreTrabajador, '', participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
-								addLog(participante.nombreTrabajador + " agregado a la base");
-								cont++;
-								if (cont >= datos.length){
-									addLog("Proceso terminado");
-									addLog("----");
-									
-									alertify.success("El proceso de importación a terminado para este grupo");
-								}
-							}, errorDB);
-						});
-						
+				tx.executeSql("delete from participante where idGrupo = ?", [grupo.idGrupo], function(tx, res){
+					tx.executeSql("delete from grupo where idGrupo = ?", [grupo.idGrupo], function(tx, res){
+						addLog("Se eliminó el grupo de la base de datos");
+						tx.executeSql("insert into grupo(idGrupo, nombre, sede, encargado) values (?, ?, ?, ?)", [grupo.idGrupo, grupo.nombre, grupo.sede, grupo.encargado], function(tx, res){
+							addLog("Nuevo grupo creado");
+							
+							var cont = 0;
+							$.each(datos, function(i, participante){
+								tx.executeSql("insert into participante (num_personal, idGrupo, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.nombreTrabajador, '', participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
+									addLog(participante.nombreTrabajador + " agregado a la base");
+									cont++;
+									if (cont >= datos.length){
+										addLog("Proceso terminado");
+										addLog("----");
+										
+										alertify.success("El proceso de importación a terminado para este grupo");
+									}
+								}, errorDB);
+							});
+							
+						}, errorDB);
 					}, errorDB);
 				}, errorDB);
 			});
