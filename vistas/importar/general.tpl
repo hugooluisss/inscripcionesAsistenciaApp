@@ -6,19 +6,21 @@
 </div>
 
 <div view="grupos">
-	<div class="page-header">
-		<h1>Grupos de evento</h1>
-		<small campo="nombreEvento"></small>
-	</div>
-	<form class="form-horizontal" id="frmFiltro">
-		<div class="input-group">
-			<span class="input-group-addon">
-				<i class="fa fa-search" aria-hidden="true"></i>
-			</span>
-			<input id="txtFiltro" placeholder="Buscar" class="form-control" />
+	<div class="fixed">
+		<div class="page-header">
+			<h1>Evento</h1>
+			<small campo="nombreEvento"></small>
 		</div>
-	</form>
-
+		<form class="form-horizontal" id="frmFiltro">
+			<div class="input-group">
+				<span class="input-group-addon">
+					<i class="fa fa-search" aria-hidden="true"></i>
+				</span>
+				<input id="txtFiltro" placeholder="Buscar" class="form-control" />
+			</div>
+		</form>
+	</div>
+	<br /><br /><br /><br /><br /><br />
 	<div class="list-group"></div>
 	
 	<a href="#" action="show" vista="eventos" class="botonPie">

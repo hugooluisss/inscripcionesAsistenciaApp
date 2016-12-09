@@ -6,7 +6,7 @@
 </div>
 
 <div view="listas">
-	<div class="row page-header">
+	<div class="row page-header fixed">
 		<h1>Pase de lista</h1>
 		<div class="col-xs-5 text-right">
 			<b>Fecha</b>
@@ -15,10 +15,8 @@
 			<input type="text" class="form-control" value="" id="txtFecha" readonly="true"/>
 		</div>
 	</div>
-	<br />
-	<br />
-	<div class="row" id="lstParticipantes">
-	</div>
+	<br /><br /><br /><br /><br /><br />
+	<div class="row" id="lstParticipantes"></div>
 </div>
 
 <input type="hidden" value="" id="grupo" />
@@ -45,7 +43,7 @@
 					<div class="form-group row">
 						<label for="txtFechaJustificacion" class="label-control col-xs-4">Fecha:</label>
 						<div class="col-xs-6">
-							<input type="date" class="form-control" id="txtFechaJustificacion" readonly="true">
+							<input type="date" class="form-control input-sm" id="txtFechaJustificacion" readonly="true">
 						</div>
 					</div>
 					

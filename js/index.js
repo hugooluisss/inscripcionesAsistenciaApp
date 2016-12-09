@@ -61,6 +61,8 @@ var app = {
 			clickMenu();
 			var plantilla = new TEvento;
 			plantilla.getEventos();
+			
+			$(".page-tittle").html("Importar grupos");
 		});
 		
 		$("[action=viewPaseLista]").click(function(){
