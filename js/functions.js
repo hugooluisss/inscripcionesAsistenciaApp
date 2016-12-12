@@ -21,7 +21,7 @@ function crearBD(db, borrar = false){
 	db.transaction(function(tx){
 		if (borrar){
 			tx.executeSql("select fotografia from participante where not fotografia = ?", [''], function(tx, res){
-				consol.info(res.rows.length);
+				console.info(res.rows.length);
 				for(var i = 0 ; i < res.rows.length ; i++){
 					console.info(res.rows.item(i).fotografia);
 					if (res.rows.item(i).fotografia != ''){
