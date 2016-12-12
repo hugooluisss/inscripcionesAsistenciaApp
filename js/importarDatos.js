@@ -190,6 +190,7 @@ TEvento = function(){
 									    }, errorDB);
 									},
 									function(error){
+										console.log(error);
 									    console.log("Some error " + error.code + " for " + url);
 									}, 
 									false);
