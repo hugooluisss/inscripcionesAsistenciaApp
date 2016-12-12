@@ -34,7 +34,7 @@ function crearBD(db, borrar = false){
 						});
 					}
 				}
-			}
+			}, errorDB);
 						
 			tx.executeSql('DROP TABLE IF EXISTS grupo');
 			tx.executeSql('DROP TABLE IF EXISTS participante');
