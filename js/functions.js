@@ -36,8 +36,8 @@ function crearBD(db, borrar = false){
 				}
 			}, errorDB);
 						
-			//tx.executeSql('DROP TABLE IF EXISTS grupo');
-			//tx.executeSql('DROP TABLE IF EXISTS participante');
+			tx.executeSql('DROP TABLE IF EXISTS grupo');
+			tx.executeSql('DROP TABLE IF EXISTS participante');
 			tx.executeSql('DROP TABLE IF EXISTS asistencia');
 			tx.executeSql('DROP TABLE IF EXISTS justificacion');
 		}
