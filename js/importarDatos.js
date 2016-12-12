@@ -171,7 +171,7 @@ TEvento = function(){
 							
 							var cont = 0;
 							$.each(datos, function(i, participante){
-								var url = participante.foto;
+								var url = participante.foto.replace(" ", "%20");
 								// we need to access LocalFileSystem
 								window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, function(fs){
 									// create the download directory is doesn't exist
@@ -196,7 +196,7 @@ TEvento = function(){
 								});
 							
 							
-								tx.executeSql("insert into participante (num_personal, idGrupo, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.nombreTrabajador, participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
+								tx.executeSql("insert into participante (num_personal, idGrupo, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.nombreTrabajador, '', participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
 									addLog(participante.nombreTrabajador + " agregado a la base");
 									cont++;
 									if (cont >= datos.length){
