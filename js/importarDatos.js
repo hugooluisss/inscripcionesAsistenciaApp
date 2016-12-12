@@ -182,7 +182,7 @@ TEvento = function(){
 										fileTransfer.download(url, filePath, function(entry){
 										    console.log("Successfully downloaded file, full path is " + entry.fullPath);
 										    db.transaction(function(tx){
-										    	tx.executeSql("update participante set fotografia = ? where num_personal = ?", [fileEntry.nativeURL, participante.num_personal], function(tx, res){
+										    	tx.executeSql("update participante set fotografia = ? where num_personal = ?", [fs.nativeURL, participante.num_personal], function(tx, res){
 										    	}, errorDB);
 										    }, errorDB);
 										},
