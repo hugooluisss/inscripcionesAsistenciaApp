@@ -24,6 +24,7 @@ function crearBD(db, borrar = false){
 				for(var i = 0 ; i < res.rows.length ; i++){
 					if (res.rows.item(i).fotografia != ''){
 						var uri = res.rows.item(i).fotografia;
+						console.info(uri);
 						resolveLocalFileSystemURL(uri, function(fileEntry){
 							fileEntry.remove(function(entry){
 								console.log(uri + " Removal succeeded");
