@@ -193,7 +193,7 @@ TEvento = function(){
 									    console.log("Some error " + error.code + " for " + url);
 									}, 
 									false);
-								}
+								});
 							
 							
 								tx.executeSql("insert into participante (num_personal, idGrupo, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.nombreTrabajador, participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
