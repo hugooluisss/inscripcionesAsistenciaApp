@@ -17,6 +17,3 @@ $.datepicker.regional['es'] = {
 };
 
 $.datepicker.setDefaults($.datepicker.regional['es']);
-$(function () {
-	$("#fecha").datepicker();
-});

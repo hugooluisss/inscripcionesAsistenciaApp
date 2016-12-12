@@ -28,6 +28,12 @@ TPaseLista = function(){
 			autoSize: true
 		});
 		
+		$("[action=show]").click(function(){
+			self.adminVistas($(this).attr("vista"));
+			
+			$(".page-tittle").html("Administración de grupos");
+		});
+		
 		$("#txtFecha").change(function(){
 			var fecha = $(this).val().split("/");
 			fecha = fecha[2] + '-' + fecha[1] + '-' + fecha[0];
@@ -123,12 +129,13 @@ TPaseLista = function(){
 		});
 	});
 	
-	this.getGrupos = function(){
+	this.getGrupos = function(){		
 		db.transaction(function(tx){
 			alertify.log("Obteniendo la lista de grupos");
 			tx.executeSql("select * from grupo", [], function(tx, res){
 				var item = null;
 				var plantilla = $("#modulo").find("[view=grupos]").find(".list-group");
+				
 				console.log("Total de grupos: " + res.rows.length);
 				for(i = 0 ; i < res.rows.length ; i++){
 					item = self.itemGrupo.clone();
@@ -137,13 +144,26 @@ TPaseLista = function(){
 						item.find("[campo=" + campo + "]").text(valor);
 					});
 					
-					item.attr("idGrupo", res.rows.item(i).idGrupo);
+					item.find("[action=paseLista]").attr("idGrupo", res.rows.item(i).idGrupo);
 					
-					item.click(function(){
+					item.find("[action=paseLista]").click(function(){
 						var item = $(this);
 						self.adminVistas("listas");
-						self.getParticipantes(item.attr("idGrupo"));
+						self.getParticipantes(item.attr("idGrupo"), "paseLista");
 						$("#grupo").val(item.attr("idGrupo"));
+						
+						$(".page-tittle").html("Pase de lista");
+					});
+					
+					item.find("[action=setCalificacion]").attr("idGrupo", res.rows.item(i).idGrupo);
+					
+					item.find("[action=setCalificacion]").click(function(){
+						var item = $(this);
+						self.adminVistas("listas");
+						self.getParticipantes(item.attr("idGrupo"), "setCalificacion");
+						$("#grupo").val(item.attr("idGrupo"));
+						
+						$(".page-tittle").html("Calificación final");
 					});
 					
 					plantilla.append(item);
@@ -152,7 +172,7 @@ TPaseLista = function(){
 		});
 	}
 	
-	this.getParticipantes = function(grupo){
+	this.getParticipantes = function(grupo, action){
 		console.info("Grupo: " + grupo);
 		db.transaction(function(tx){
 			alertify.log("Obteniendo la lista de participantes");
@@ -161,6 +181,14 @@ TPaseLista = function(){
 				var plantilla = $("#modulo").find("#lstParticipantes");
 				console.log("Total de participantes: " + res.rows.length);
 				
+				if (action == 'paseLista'){
+					$("#setCalendar").show();
+					$("#finder").removeClass("col-xs-12").addClass("col-xs-6");
+				}else{
+					$("#setCalendar").hide();
+					$("#finder").removeClass("col-xs-6").addClass("col-xs-12");
+				}
+				
 				for(i = 0 ; i < res.rows.length ; i++){
 					item = self.itemParticipante.clone();
 					
@@ -168,55 +196,105 @@ TPaseLista = function(){
 						item.find("[campo=" + campo + "]").text(valor);
 					});
 					
-					item.find("[type=checkbox]").attr("idParticipante", res.rows.item(i).idParticipante);
-					item.find("a[action=justificar]").attr("idParticipante", res.rows.item(i).idParticipante);
+					item.find(".calificacion").val(res.rows.item(i).calificacion);
+					item.find(".calificacion").attr("anterior", res.rows.item(i).calificacion);
 					
-					item.find("[type=checkbox]").change(function(){
-						var el = $(this);
-						if ($("#txtFecha").val() == ''){
-							alertify.error("Selecciona una fecha");
-							$("#txtFecha").focus();
-							
-							el.prop("checked", false);
-						}else{					
-							if (el.is(":checked"))
-								db.transaction(function(tx){
-									console.log($("#txtFecha").val() + " " + el.attr("idParticipante"));
-									tx.executeSql("insert into asistencia (fecha, idParticipante) values (?, ?)", [$("#txtFecha").val(), el.attr("idParticipante")], function(tx, res){
-										//alertify.success("Asistencia registrada");
-										
-										el.parent().parent().parent().parent().find("[action=justificar]").hide();
-										
-									}, function(tx, res){
-										console.log(res);
-										el.prop("checked", false);
-										alertify.error("Error al registrar la asistencia");
-									});
-								});
-							else
-								db.transaction(function(tx){
-									tx.executeSql("delete from asistencia where fecha = ? and idParticipante = ?", [$("#txtFecha").val(), el.attr("idParticipante")], function(tx, res){
-										//alertify.success("Asistencia eliminada");
-										el.parent().parent().parent().parent().find("[action=justificar]").show();
-										
-									}, function(){
-										el.prop("checked", true);
-										alertify.error("Error al eliminar el registro de asistencia");
-									});
-								});
-						}
-					});
+					if (res.rows.item(i).fotografia != '')
+						item.find("img.media-object").prop("src", res.rows.item(i).fotografia);
 					
-					item.find("[action=justificar]").click(function(){
-						var participante = $(this).attr("idParticipante");
-						$("#winJustificaciones").find("#participante").val(participante);
-						$("#winJustificaciones").find("#txtFechaJustificacion").val($("#txtFecha").val());
+					if (action == 'paseLista'){
+						item.find("[type=checkbox]").attr("idParticipante", res.rows.item(i).idParticipante);
+						item.find("a[action=justificar]").attr("idParticipante", res.rows.item(i).idParticipante);
+						item.find(".calificacion").hide();
+						item.find("[type=checkbox]").change(function(){
+							var el = $(this);
+							if ($("#txtFecha").val() == ''){
+								alertify.error("Selecciona una fecha");
+								$("#txtFecha").focus();
+								
+								el.prop("checked", false);
+							}else{					
+								if (el.is(":checked"))
+									db.transaction(function(tx){
+										tx.executeSql("insert into asistencia (fecha, idParticipante) values (?, ?)", [$("#txtFecha").val(), el.attr("idParticipante")], function(tx, res){
+											el.parent().parent().parent().parent().find("[action=justificar]").hide();
+											
+										}, function(tx, res){
+											console.log(res);
+											el.prop("checked", false);
+											alertify.error("Error al registrar la asistencia");
+										});
+									});
+								else
+									db.transaction(function(tx){
+										tx.executeSql("delete from asistencia where fecha = ? and idParticipante = ?", [$("#txtFecha").val(), el.attr("idParticipante")], function(tx, res){
+											el.parent().parent().parent().parent().find("[action=justificar]").show();
+											
+										}, function(){
+											el.prop("checked", true);
+											alertify.error("Error al eliminar el registro de asistencia");
+										});
+									});
+							}
+						});
 						
-						$("#winJustificaciones").modal();
-					});
-					
+						item.find("[action=justificar]").click(function(){
+							var participante = $(this).attr("idParticipante");
+							
+							$("#winJustificaciones").find("#participante").val(participante);
+							$("#winJustificaciones").find("#txtFechaJustificacion").val($("#txtFecha").val());
+							
+							$("#winJustificaciones").modal();
+						});
+					}else{ //Si es calificación final
+						item.find("[type=checkbox]").hide();
+						item.find("[type=checkbox]").parent().hide();
+						item.find("a[action=justificar]").hide();
+						item.find(".calificacion").attr("idParticipante", res.rows.item(i).idParticipante);
+						
+						item.find(".calificacion").change(function(){
+							var el = $(this);
+							valor = el.val();
+							if (isNaN(valor)){
+								alertify.error("Esto no es un número");
+								el.val(el.attr("anterior"));
+							}else if(valor < 0 || valor > 10){
+								alertify.error("Debe ser un valor dentro del rango de 0 a 10");
+								el.val(el.attr("anterior"));
+							}else{
+								db.transaction(function(tx){
+									tx.executeSql("update participante set calificacion = ? where idParticipante = ?", [valor, el.attr("idParticipante")], function(tx, res){
+										el.attr("anterior", el.val());
+										console.info("Calificacion registrada");
+									}, function(){
+										alertify.error("Error al registrar la calificación");
+									});
+								});
+							}
+						});
+					}
 					plantilla.append(item);
 				}
+				
+				$("#modulo").find("[view=listas]").find("#txtFiltro").val("");
+				
+				$("#modulo").find("[view=listas]").find("#txtFiltro").keyup(function(){
+					var texto = $("#modulo").find("[view=listas]").find("#txtFiltro").val().toUpperCase();
+					
+					plantilla.find(".media").each(function(){
+						el = $(this);
+						
+						if (texto == '')
+							el.show();
+						else{
+							el.hide();
+							$.each(["nombrePlantel", "plaza", "especialidad", "nombre"], function(i, campo){
+								if (el.find("[campo=" + campo + "]").text().toUpperCase().indexOf(texto) >= 0)
+									el.show();
+							})
+						}
+					});
+				});
 			}, errorDB);
 		});
 	}

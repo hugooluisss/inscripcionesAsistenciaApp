@@ -28,7 +28,7 @@ function crearBD(db, borrar = false){
 		
 		tx.executeSql('CREATE TABLE IF NOT EXISTS grupo (idGrupo integer primary key, nombre text, sede text, encargado text)', [], function(){
 			console.log("tabla grupo creada");
-			tx.executeSql('CREATE TABLE IF NOT EXISTS participante (idParticipante integer primary key autoincrement, num_personal integer, idGrupo integer, nombre text, fotografia text, idPlantel integer, nombrePlantel text, plaza text, especialidad text, FOREIGN KEY(idGrupo) REFERENCES grupo(idGrupo) ON UPDATE cascade ON DELETE cascade)', [], function(){
+			tx.executeSql('CREATE TABLE IF NOT EXISTS participante (idParticipante integer primary key autoincrement, num_personal integer, idGrupo integer, nombre text, fotografia text, idPlantel integer, nombrePlantel text, plaza text, especialidad text, calificacion real, FOREIGN KEY(idGrupo) REFERENCES grupo(idGrupo) ON UPDATE cascade ON DELETE cascade)', [], function(){
 				console.log("tabla participante creada");
 				
 				tx.executeSql('CREATE TABLE IF NOT EXISTS asistencia(fecha text, idParticipante integer, primary key(fecha, idParticipante), FOREIGN KEY(idParticipante) REFERENCES participante(idParticipante) ON UPDATE cascade ON DELETE cascade)', [], function(){

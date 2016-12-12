@@ -1,22 +1,40 @@
 <div view="grupos">
-	<div class="page-header">
-		<h1>Grupos disponibles</h1>
-	</div>
 	<div class="list-group"></div>
 </div>
 
 <div view="listas">
 	<div class="row page-header fixed">
-		<h1>Pase de lista</h1>
-		<div class="col-xs-5 text-right">
-			<b>Fecha</b>
+		<br />
+		<div class="col-xs-6" id="setCalendar">
+			<div class="input-group">
+				<span class="input-group-addon">
+					<i class="fa fa-calendar" aria-hidden="true"></i>
+				</span>
+				<input type="text" class="form-control" value="" id="txtFecha" readonly="true"/>
+			</div>
 		</div>
-		<div class="col-xs-5">
-			<input type="text" class="form-control" value="" id="txtFecha" readonly="true"/>
+		<div class="col-xs-6" id="finder">
+			<form class="form-horizontal" id="frmFiltro" onsubmit="javascript: return false">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="fa fa-search" aria-hidden="true"></i>
+					</span>
+					<input id="txtFiltro" placeholder="Buscar" class="form-control" />
+				</div>
+			</form>
 		</div>
+		<br />
+		<br />
 	</div>
-	<br /><br /><br /><br /><br /><br />
+	<br /><br /><br /><br />
 	<div class="row" id="lstParticipantes"></div>
+	
+	<a href="#" action="show" vista="grupos" class="botonPie">
+		<span class="fa-stack fa-2x in">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
 </div>
 
 <input type="hidden" value="" id="grupo" />

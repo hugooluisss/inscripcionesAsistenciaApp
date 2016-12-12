@@ -68,6 +68,8 @@ var app = {
 		$("[action=viewPaseLista]").click(function(){
 			clickMenu();
 			var plantilla = new TPaseLista;
+			
+			$(".page-tittle").html("Administración de grupos");
 		});
 		
 		$("[action=viewConfiguracion]").click(function(){

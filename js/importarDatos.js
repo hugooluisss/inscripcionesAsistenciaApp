@@ -171,7 +171,32 @@ TEvento = function(){
 							
 							var cont = 0;
 							$.each(datos, function(i, participante){
-								tx.executeSql("insert into participante (num_personal, idGrupo, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.nombreTrabajador, '', participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
+								var url = participante.foto;
+								// we need to access LocalFileSystem
+								window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, function(fs){
+									// create the download directory is doesn't exist
+									fs.root.getDirectory('downloads', { create: true });
+									
+									// we will save file in .. downloads/phonegap-logo.png
+									var filePath = fs.root.fullPath + '/downloads/' + url.split('/').pop();
+									var fileTransfer = new window.FileTransfer();
+									var uri = encodeURI(decodeURIComponent(url));
+									
+									fileTransfer.download(uri, filePath, function(entry){
+									    console.log("Successfully downloaded file, full path is " + entry.fullPath);
+									    db.transaction(function(tx){
+									    	tx.executeSql("update participante set fotografia = ? where num_personal = ?", [entry.fullPath, participante.num_personal], function(tx, res){
+									    	}, errorDB);
+									    }, errorDB);
+									},
+									function(error){
+									    console.log("Some error " + error.code + " for " + url);
+									}, 
+									false);
+								}
+							
+							
+								tx.executeSql("insert into participante (num_personal, idGrupo, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.nombreTrabajador, participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
 									addLog(participante.nombreTrabajador + " agregado a la base");
 									cont++;
 									if (cont >= datos.length){
