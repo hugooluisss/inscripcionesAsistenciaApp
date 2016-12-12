@@ -20,7 +20,7 @@ function reposition(modal) {
 function crearBD(db, borrar = false){
 	db.transaction(function(tx){
 		if (borrar){
-			tx.executeSql("select fotografia from participante where fotografia = ?", [''], function(tx, res){
+			tx.executeSql("select fotografia from participante where not fotografia = ?", [''], function(tx, res){
 				for(var i = 0 ; i < res.rows.length ; i++){
 					if (res.rows.item(i).fotografia != ''){
 						fileSystem.root.getFile(res.rows.item(i).fotografia, {create: false, exclusive: false}, function(fileEntry){
