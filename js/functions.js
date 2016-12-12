@@ -36,10 +36,10 @@ function crearBD(db, borrar = false){
 				}
 			}, errorDB);
 						
-			tx.executeSql('DROP TABLE IF EXISTS grupo');
-			tx.executeSql('DROP TABLE IF EXISTS participante');
-			//tx.executeSql('DROP TABLE IF EXISTS asistencia');
-			//tx.executeSql('DROP TABLE IF EXISTS justificacion');
+			//tx.executeSql('DROP TABLE IF EXISTS grupo');
+			//tx.executeSql('DROP TABLE IF EXISTS participante');
+			tx.executeSql('DROP TABLE IF EXISTS asistencia');
+			tx.executeSql('DROP TABLE IF EXISTS justificacion');
 		}
 		
 		tx.executeSql('CREATE TABLE IF NOT EXISTS grupo (idGrupo integer primary key, nombre text, sede text, encargado text)', [], function(){
