@@ -20,6 +20,22 @@ function reposition(modal) {
 function crearBD(db, borrar = false){
 	db.transaction(function(tx){
 		if (borrar){
+			tx.executeSql("select fotografia from participante where fotografia = ?", [''], function(tx, res){
+				for(var i = 0 ; i < res.rows.length ; i++){
+					if (res.rows.item(i).fotografia != ''){
+						fileSystem.root.getFile(res.rows.item(i).fotografia, {create: false, exclusive: false}, function(fileEntry){
+							fileEntry.remove(function(entry){
+								console.log(res.rows.item(i).fotografia + " Removal succeeded");
+							}, function(error){
+								console.log(res.rows.item(i).fotografia + " Removal error " + error.code);
+							});
+						}, function(){
+							console.log("No se pudo borrar el archivo");
+						});
+					}
+				}
+			}
+						
 			tx.executeSql('DROP TABLE IF EXISTS grupo');
 			tx.executeSql('DROP TABLE IF EXISTS participante');
 			tx.executeSql('DROP TABLE IF EXISTS asistencia');
