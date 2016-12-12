@@ -21,16 +21,16 @@ function crearBD(db, borrar = false){
 	db.transaction(function(tx){
 		if (borrar){
 			tx.executeSql("select fotografia from participante where not fotografia = ?", [''], function(tx, res){
-				console.info(res.rows.length);
 				for(var i = 0 ; i < res.rows.length ; i++){
-					console.info(res.rows.item(i).fotografia);
 					if (res.rows.item(i).fotografia != ''){
+						var uri = res.rows.item(i).fotografia;
+						
 						window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, function(fileSystem){
-							fileSystem.root.getFile(res.rows.item(i).fotografia, {create: false, exclusive: false}, function(fileEntry){
+							fileSystem.root.getFile(uri, {create: false, exclusive: false}, function(fileEntry){
 								fileEntry.remove(function(entry){
-									console.log(res.rows.item(i).fotografia + " Removal succeeded");
+									console.log(uri + " Removal succeeded");
 								}, function(error){
-									console.log(res.rows.item(i).fotografia + " Removal error " + error.code);
+									console.log(uri + " Removal error " + error.code);
 								});
 							}, function(){
 								console.log("No se pudo borrar el archivo");
