@@ -171,29 +171,27 @@ TEvento = function(){
 							
 							var cont = 0;
 							$.each(datos, function(i, participante){
-								var url = participante.foto.replace(new RegExp(' ', 'g'), "%20");
+								var url = encodeURI(decodeURIComponent(participante.foto));
 								// we need to access LocalFileSystem
 								window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, function(fs){
 									// create the download directory is doesn't exist
-									fs.root.getDirectory('downloads', { create: true });
-									
-									// we will save file in .. downloads/phonegap-logo.png
-									var filePath = fs.root.fullPath + '/downloads/' + url.split('/').pop();
-									var fileTransfer = new window.FileTransfer();
-									var uri = encodeURI(decodeURIComponent(url));
-									
-									fileTransfer.download(uri, filePath, function(entry){
-									    console.log("Successfully downloaded file, full path is " + entry.fullPath);
-									    db.transaction(function(tx){
-									    	tx.executeSql("update participante set fotografia = ? where num_personal = ?", [entry.fullPath, participante.num_personal], function(tx, res){
-									    	}, errorDB);
-									    }, errorDB);
-									},
-									function(error){
-										console.log(error);
-									    console.log("Some error " + error.code + " for " + url);
-									}, 
-									false);
+									fs.root.getFile(fs.root.fullPath + '/' + participante.num_personal + ".jpg", {create: true, exclusive: false}, function(){
+										var filePath = fs.toURL();
+										var fileTransfer = new window.FileTransfer();
+										
+										fileTransfer.download(url, filePath, function(entry){
+										    console.log("Successfully downloaded file, full path is " + entry.fullPath);
+										    db.transaction(function(tx){
+										    	tx.executeSql("update participante set fotografia = ? where num_personal = ?", [entry.fullPath, participante.num_personal], function(tx, res){
+										    	}, errorDB);
+										    }, errorDB);
+										},
+										function(error){
+											console.log(error);
+										    console.log("Some error " + error.code + " for " + url);
+										}, 
+										false);
+									});
 								});
 							
 							
