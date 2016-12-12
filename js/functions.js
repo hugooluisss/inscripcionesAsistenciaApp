@@ -24,16 +24,11 @@ function crearBD(db, borrar = false){
 				for(var i = 0 ; i < res.rows.length ; i++){
 					if (res.rows.item(i).fotografia != ''){
 						var uri = res.rows.item(i).fotografia;
-						
-						window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, function(fileSystem){
-							fileSystem.root.getFile(uri, {create: false, exclusive: false}, function(fileEntry){
-								fileEntry.remove(function(entry){
-									console.log(uri + " Removal succeeded");
-								}, function(error){
-									console.log(uri + " Removal error " + error.code);
-								});
-							}, function(){
-								console.log("No se pudo borrar el archivo");
+						resolveLocalFileSystemURL(uri, function(fileEntry){
+							fileEntry.remove(function(entry){
+								console.log(uri + " Removal succeeded");
+							}, function(error){
+								console.log(uri + " Removal error " + error.code);
 							});
 						});
 					}
