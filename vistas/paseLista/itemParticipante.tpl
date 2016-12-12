@@ -16,7 +16,7 @@
 				<a href="#" class="btn btn-danger btn-xs" action="justificar" style="display: none">Justificación</a>
 			</div>
 			<div class="col-xs-6 pull-right">
-				<div class="col-xs-6 col-xs-offset-6">
+				<div class="col-xs-9 col-xs-offset-1">
 					<input type="number" class="calificacion form-control text-right">
 				</div>
 				<span class="checkbox" style="margin-right: 10px;">
