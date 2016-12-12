@@ -171,7 +171,7 @@ TEvento = function(){
 							
 							var cont = 0;
 							$.each(datos, function(i, participante){
-								var url = participante.foto.replace(" ", "%20");
+								var url = participante.foto.replace(new RegExp(' ', 'g'), "%20");
 								// we need to access LocalFileSystem
 								window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, function(fs){
 									// create the download directory is doesn't exist
