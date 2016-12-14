@@ -348,7 +348,7 @@ function sendOficinas(el){
 					for(var i2 = 0 ; i2 < res.rows.length ; i2++)
 						participante.asistencia.push(res.rows.item(i2).fecha);
 						
-					datos.participante.push(participante);
+					datos.participantes.push(participante);
 					
 					consol.log(JSON.stringify(datos));
 				}, errorDB);
