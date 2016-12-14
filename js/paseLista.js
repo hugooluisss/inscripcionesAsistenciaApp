@@ -350,7 +350,7 @@ function sendOficinas(el){
 						
 					datos.participantes.push(participante);
 					
-					consol.log(JSON.stringify(datos));
+					console.log(JSON.stringify(datos));
 				}, errorDB);
 			}
 		}, errorDB);
