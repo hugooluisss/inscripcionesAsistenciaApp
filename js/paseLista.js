@@ -291,7 +291,6 @@ TPaseLista = function(){
 							});
 						break;
 					}
-					}
 					plantilla.append(item);
 				}
 				
