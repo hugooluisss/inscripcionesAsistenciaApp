@@ -193,6 +193,7 @@ TPaseLista = function(){
 			tx.executeSql("select * from participante where idGrupo = ? order by nombre", [grupo], function(tx, res){
 				var item = null;
 				var plantilla = $("#modulo").find("#lstParticipantes");
+				$("#modulo").find("#lstParticipantes").html("");
 				console.log("Total de participantes: " + res.rows.length);
 				
 				if (action == 'paseLista'){
@@ -338,13 +339,12 @@ function sendOficinas(el){
 			datos.participantes = new Array;
 			for(i = 0 ; i < res.rows.length ; i++){
 				var rowPart = res.rows.item(i);
-				var participante = new Array;
 				
-				participante.num_personal = rowPart.num_personal;
-				participante.calificacion = rowPart.calificacion;
-				
-				tx.executeSql("select distinct fecha from asistencia where idParticipante = ?", [rowPart.idParticipante], function(tx, res){
-					console.info(res.rows.length);
+				tx.executeSql("select distinct fecha from asistencia where idParticipante = ?", [rowPart.idParticipante], function(tx, res){	
+					var participante = new Array;				
+					participante.num_personal = rowPart.num_personal;
+					participante.calificacion = rowPart.calificacion;
+					
 					participante.asistencia = new Array;
 					for(var i2 = 0 ; i2 < res.rows.length ; i2++)
 						participante.asistencia.push(res.rows.item(i2).fecha);
