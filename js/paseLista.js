@@ -344,7 +344,7 @@ function sendOficinas(el){
 				participante.calificacion = rowPart.calificacion;
 				participante.asistencia = new Array;
 				
-				tx.executeSql("select fecha from asistencia where idParticipante = ?", [participante.idParticipante], function(tx, res){
+				tx.executeSql("select fecha from asistencia where idParticipante = ?", [rowPart.idParticipante], function(tx, res){
 					console.info(res.rows.length);
 					for(var i2 = 0 ; i2 < res.rows.length ; i2++)
 						participante.asistencia.push(res.rows.item(i2).fecha);
