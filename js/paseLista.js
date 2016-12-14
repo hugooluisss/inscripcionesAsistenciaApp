@@ -215,7 +215,7 @@ TPaseLista = function(){
 					
 					if (res.rows.item(i).fotografia != '')
 						item.find("img.media-object").prop("src", res.rows.item(i).fotografia);
-					alert(action);
+					
 					switch(action){
 						case 'paseLista':
 							item.find("[type=checkbox]").attr("idParticipante", res.rows.item(i).idParticipante);
@@ -345,8 +345,8 @@ function sendOficinas(el){
 				participante.asistencia = new Array;
 				
 				tx.executeSql("select fecha from asistencia where idParticipante = ?", [participante.num_personal], function(tx, res){
-					for(var i = 0 ; i < res.rows.length ; i++)
-						participante.asistencia.push(res.rows.item(i).fecha);
+					for(var i2 = 0 ; i2 < res.rows.length ; i2++)
+						participante.asistencia.push(res.rows.item(i2).fecha);
 						
 					datos.participante.push(participante);
 					
