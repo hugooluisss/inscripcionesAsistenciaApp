@@ -166,6 +166,20 @@ TPaseLista = function(){
 						$(".page-tittle").html("Calificación final");
 					});
 					
+					item.find("[action=sendOficinas]").attr("idGrupo", res.rows.item(i).idGrupo);
+					
+					item.find("[action=sendOficinas]").click(function(){
+						var item = $(this);
+						
+						alertify.confirm("Esta acción enviará los datos a oficinas centrales y no podrán ser cambiadas, ¿estás seguro?", function (e) {
+							if (e) {
+								sendOficinas(item);
+							}else{ 
+								alertify.error("Has pulsado '" + alertify.labels.cancel + "'");
+							}
+						});
+					});
+					
 					plantilla.append(item);
 				}
 			}, errorDB);
@@ -202,76 +216,81 @@ TPaseLista = function(){
 					if (res.rows.item(i).fotografia != '')
 						item.find("img.media-object").prop("src", res.rows.item(i).fotografia);
 					
-					if (action == 'paseLista'){
-						item.find("[type=checkbox]").attr("idParticipante", res.rows.item(i).idParticipante);
-						item.find("a[action=justificar]").attr("idParticipante", res.rows.item(i).idParticipante);
-						item.find(".calificacion").hide();
-						item.find("[type=checkbox]").change(function(){
-							var el = $(this);
-							if ($("#txtFecha").val() == ''){
-								alertify.error("Selecciona una fecha");
-								$("#txtFecha").focus();
+					switch(action){
+						case 'paseLista':
+							item.find("[type=checkbox]").attr("idParticipante", res.rows.item(i).idParticipante);
+							item.find("a[action=justificar]").attr("idParticipante", res.rows.item(i).idParticipante);
+							item.find(".calificacion").hide();
+							
+							item.find("[type=checkbox]").change(function(){
+								var el = $(this);
+								if ($("#txtFecha").val() == ''){
+									alertify.error("Selecciona una fecha");
+									$("#txtFecha").focus();
+									
+									el.prop("checked", false);
+								}else{					
+									if (el.is(":checked"))
+										db.transaction(function(tx){
+											tx.executeSql("insert into asistencia (fecha, idParticipante) values (?, ?)", [$("#txtFecha").val(), el.attr("idParticipante")], function(tx, res){
+												el.parent().parent().parent().parent().find("[action=justificar]").hide();
+												
+											}, function(tx, res){
+												console.log(res);
+												el.prop("checked", false);
+												alertify.error("Error al registrar la asistencia");
+											});
+										});
+									else
+										db.transaction(function(tx){
+											tx.executeSql("delete from asistencia where fecha = ? and idParticipante = ?", [$("#txtFecha").val(), el.attr("idParticipante")], function(tx, res){
+												el.parent().parent().parent().parent().find("[action=justificar]").show();
+												
+											}, function(){
+												el.prop("checked", true);
+												alertify.error("Error al eliminar el registro de asistencia");
+											});
+										});
+								}
+							});
+							
+							item.find("[action=justificar]").click(function(){
+								var participante = $(this).attr("idParticipante");
 								
-								el.prop("checked", false);
-							}else{					
-								if (el.is(":checked"))
+								$("#winJustificaciones").find("#participante").val(participante);
+								$("#winJustificaciones").find("#txtFechaJustificacion").val($("#txtFecha").val());
+								
+								$("#winJustificaciones").modal();
+							});
+						break;
+						default://Si es calificación final
+							item.find("[type=checkbox]").hide();
+							item.find("[type=checkbox]").parent().hide();
+							item.find("a[action=justificar]").hide();
+							item.find(".calificacion").attr("idParticipante", res.rows.item(i).idParticipante);
+							
+							item.find(".calificacion").change(function(){
+								var el = $(this);
+								valor = el.val();
+								if (isNaN(valor)){
+									alertify.error("Esto no es un número");
+									el.val(el.attr("anterior"));
+								}else if(valor < 0 || valor > 10){
+									alertify.error("Debe ser un valor dentro del rango de 0 a 10");
+									el.val(el.attr("anterior"));
+								}else{
 									db.transaction(function(tx){
-										tx.executeSql("insert into asistencia (fecha, idParticipante) values (?, ?)", [$("#txtFecha").val(), el.attr("idParticipante")], function(tx, res){
-											el.parent().parent().parent().parent().find("[action=justificar]").hide();
-											
-										}, function(tx, res){
-											console.log(res);
-											el.prop("checked", false);
-											alertify.error("Error al registrar la asistencia");
-										});
-									});
-								else
-									db.transaction(function(tx){
-										tx.executeSql("delete from asistencia where fecha = ? and idParticipante = ?", [$("#txtFecha").val(), el.attr("idParticipante")], function(tx, res){
-											el.parent().parent().parent().parent().find("[action=justificar]").show();
-											
+										tx.executeSql("update participante set calificacion = ? where idParticipante = ?", [valor, el.attr("idParticipante")], function(tx, res){
+											el.attr("anterior", el.val());
+											console.info("Calificacion registrada");
 										}, function(){
-											el.prop("checked", true);
-											alertify.error("Error al eliminar el registro de asistencia");
+											alertify.error("Error al registrar la calificación");
 										});
 									});
-							}
-						});
-						
-						item.find("[action=justificar]").click(function(){
-							var participante = $(this).attr("idParticipante");
-							
-							$("#winJustificaciones").find("#participante").val(participante);
-							$("#winJustificaciones").find("#txtFechaJustificacion").val($("#txtFecha").val());
-							
-							$("#winJustificaciones").modal();
-						});
-					}else{ //Si es calificación final
-						item.find("[type=checkbox]").hide();
-						item.find("[type=checkbox]").parent().hide();
-						item.find("a[action=justificar]").hide();
-						item.find(".calificacion").attr("idParticipante", res.rows.item(i).idParticipante);
-						
-						item.find(".calificacion").change(function(){
-							var el = $(this);
-							valor = el.val();
-							if (isNaN(valor)){
-								alertify.error("Esto no es un número");
-								el.val(el.attr("anterior"));
-							}else if(valor < 0 || valor > 10){
-								alertify.error("Debe ser un valor dentro del rango de 0 a 10");
-								el.val(el.attr("anterior"));
-							}else{
-								db.transaction(function(tx){
-									tx.executeSql("update participante set calificacion = ? where idParticipante = ?", [valor, el.attr("idParticipante")], function(tx, res){
-										el.attr("anterior", el.val());
-										console.info("Calificacion registrada");
-									}, function(){
-										alertify.error("Error al registrar la calificación");
-									});
-								});
-							}
-						});
+								}
+							});
+						break;
+					}
 					}
 					plantilla.append(item);
 				}
@@ -308,3 +327,33 @@ TPaseLista = function(){
 			console.log("Error en la vista");
 	}
 };
+
+
+function sendOficinas(el){
+	db.transaction(function(tx){
+		alertify.log("Se está construyendo el objeto de exportación");
+		var datos = new Array;
+		datos.idGrupo = el.attr("idGrupo");
+		tx.executeSql("select num_personal, calificacion, idParticipante from participante where idGrupo = ? order by nombre", [el.attr("idGrupo")], function(tx, res){
+			var i = 0;
+			datos.participantes = new Array;
+			for(i = 0 ; i < res.rows.length ; i++){
+				var rowPart = res.rows.item(i);
+				var participante = new Array;
+				
+				participante.num_personal = rowPart.num_personal;
+				participante.calificacion = rowPart.calificacion;
+				participante.asistencia = new Array;
+				
+				tx.executeSql("select fecha from asistencia where idParticipante = ? order by nombre", [participante.num_personal], function(tx, res){
+					for(var i = 0 ; i < res.rows.length ; i++)
+						participante.asistencia.push(res.rows.item(i).fecha);
+						
+					datos.participante.push(participante);
+					
+					consol.log(JSON.stringify(datos));
+				}, errorDB);
+			}
+		}, errorDB);
+	});
+}
