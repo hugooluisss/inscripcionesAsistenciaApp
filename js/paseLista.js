@@ -345,15 +345,16 @@ function sendOficinas(el){
 				participante.asistencia = new Array;
 				
 				tx.executeSql("select fecha from asistencia where idParticipante = ?", [participante.num_personal], function(tx, res){
+					console.info(res.rows.length);
 					for(var i2 = 0 ; i2 < res.rows.length ; i2++)
 						participante.asistencia.push(res.rows.item(i2).fecha);
 						
 					datos.participantes.push(participante);
-					
-					console.log(datos);
-					//console.log(JSON.stringify(datos));
 				}, errorDB);
 			}
+			
+			console.log(datos);
+			//console.log(JSON.stringify(datos));
 		}, errorDB);
 	});
 }
