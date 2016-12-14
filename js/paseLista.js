@@ -215,7 +215,7 @@ TPaseLista = function(){
 					
 					if (res.rows.item(i).fotografia != '')
 						item.find("img.media-object").prop("src", res.rows.item(i).fotografia);
-					
+					alert(action);
 					switch(action){
 						case 'paseLista':
 							item.find("[type=checkbox]").attr("idParticipante", res.rows.item(i).idParticipante);
@@ -263,7 +263,7 @@ TPaseLista = function(){
 								$("#winJustificaciones").modal();
 							});
 						break;
-						default://Si es calificación final
+						case 'setCalificacion'://Si es calificación final
 							item.find("[type=checkbox]").hide();
 							item.find("[type=checkbox]").parent().hide();
 							item.find("a[action=justificar]").hide();
@@ -344,7 +344,7 @@ function sendOficinas(el){
 				participante.calificacion = rowPart.calificacion;
 				participante.asistencia = new Array;
 				
-				tx.executeSql("select fecha from asistencia where idParticipante = ? order by nombre", [participante.num_personal], function(tx, res){
+				tx.executeSql("select fecha from asistencia where idParticipante = ?", [participante.num_personal], function(tx, res){
 					for(var i = 0 ; i < res.rows.length ; i++)
 						participante.asistencia.push(res.rows.item(i).fecha);
 						
