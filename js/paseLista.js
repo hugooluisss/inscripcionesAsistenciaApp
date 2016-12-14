@@ -336,25 +336,32 @@ function sendOficinas(el){
 		datos.idGrupo = el.attr("idGrupo");
 		tx.executeSql("select num_personal, calificacion, idParticipante from participante where idGrupo = ? order by nombre", [el.attr("idGrupo")], function(tx, res){
 			var i = 0;
-			datos.participantes = new Array;
+			datos.participantes = [];
+			datos["movil"] = true;
 			for(i = 0 ; i < res.rows.length ; i++){
 				var rowPart = res.rows.item(i);
 				
 				tx.executeSql("select distinct fecha from asistencia where idParticipante = ?", [rowPart.idParticipante], function(tx, res){	
-					var participante = new Array;				
-					participante.num_personal = rowPart.num_personal;
-					participante.calificacion = rowPart.calificacion;
+					var participante = [];
+					participante["num_personal"] = rowPart.num_personal;
+					participante["calificacion"] = rowPart.calificacion;
 					
-					participante.asistencia = new Array;
+					participante.asistencia = [];
 					for(var i2 = 0 ; i2 < res.rows.length ; i2++)
-						participante.asistencia.push(res.rows.item(i2).fecha);
+						participante.asistencia[participante.asistencia.length] = res.rows.item(i2).fecha;
 						
-					datos.participantes.push(participante);
+					datos.participantes[datos.participantes.length] = participante;
 				}, errorDB);
 			}
 			
 			console.log(datos);
-			//console.log(JSON.stringify(datos));
+			//Se envian los datos
+			$.post(server + "?mod=cAdministracionEventos&action=importarDevice", datos, function(resp){
+				console.log(resp);
+				
+			}, "json");
+			
+			console.log(JSON.stringify(datos));
 		}, errorDB);
 	});
 }
