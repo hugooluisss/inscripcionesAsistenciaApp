@@ -329,39 +329,55 @@ TPaseLista = function(){
 };
 
 
-function sendOficinas(el){
+function sendOficinas(elemento){
 	db.transaction(function(tx){
 		alertify.log("Se está construyendo el objeto de exportación");
-		var datos = new Array;
-		datos.idGrupo = el.attr("idGrupo");
-		tx.executeSql("select num_personal, calificacion, idParticipante from participante where idGrupo = ? order by nombre", [el.attr("idGrupo")], function(tx, res){
-			var i = 0;
-			datos.participantes = [];
-			datos["movil"] = true;
-			for(i = 0 ; i < res.rows.length ; i++){
-				var rowPart = res.rows.item(i);
-				
-				tx.executeSql("select distinct fecha from asistencia where idParticipante = ?", [rowPart.idParticipante], function(tx, res){	
-					var participante = [];
-					participante["num_personal"] = rowPart.num_personal;
-					participante["calificacion"] = rowPart.calificacion;
+		tx.executeSql("select num_personal, calificacion, a.idParticipante, b.fecha, c.motivo, c.comprobante, c.fecha as fechaJust from participante a left join asistencia b on a.idParticipante = b.idParticipante left join justificacion c on a.idParticipante = c.idParticipante where idGrupo = ? order by nombre", [elemento.attr("idGrupo")], function(tx, res){
+			var datos = [];
+			var row = null;
+			var num_personal = null;
+			
+			for(var i = 0 ; i < res.rows.length ; i++){
+				row = res.rows.item(i);
+				if (row.num_personal != num_personal){
+					if (num_personal != null){
+						datos.push(el);
+					}
 					
-					participante.asistencia = [];
-					for(var i2 = 0 ; i2 < res.rows.length ; i2++)
-						participante.asistencia[participante.asistencia.length] = res.rows.item(i2).fecha;
-						
-					datos.participantes[datos.participantes.length] = participante;
-				}, errorDB);
+					var el = new Object;
+					el.num_personal = row.num_personal;
+					el.calificacion = row.calificacion;
+					el.asistencias = [];
+					el.justificaciones = [];
+					
+					num_personal = row.num_personal;
+				}
+				
+				if (row.fecha != null)
+					el.asistencias.push(row.fecha);
+				
+				if (row.fechaJust != null){
+					var just = new Object;
+					
+					just.fecha = row.fechaJust;
+					just.motivo = row.motivo;
+					just.comprobante = row.comprobante;
+					
+					el.justificaciones.push(just);
+				}
 			}
 			
-			console.log(datos);
-			//Se envian los datos
-			$.post(server + "?mod=cAdministracionEventos&action=importarDevice", datos, function(resp){
-				console.log(resp);
-				
-			}, "json");
+			datos.push(el);
 			
-			console.log(JSON.stringify(datos));
+			$.post(server + "?mod=cAdministracionEventos&action=importarDevice", {
+				"participantes": JSON.stringify(datos),
+				"idGrupo": elemento.attr("idGrupo"),
+				"movil": true
+			}, function(resp){
+				console.log(resp);
+			}, "json");
 		}, errorDB);
 	});
+	
+	
 }
