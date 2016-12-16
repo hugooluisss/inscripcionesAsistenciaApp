@@ -87,6 +87,16 @@ function clickMenu(){
 
 $(document).ready(function(){
 	app.onDeviceReady();
+	
+	$.ajaxSetup({
+		error: function( jqXHR, textStatus, errorThrown ) {
+			alertify.error("No se pudo establecer conexión con el servidor, verifica tu conexión a internet");
+			
+			$("#over").css("display", 'none');
+			$("#fade").css("display", 'none');
+		}
+	});
+
 });
 
 //app.initialize();

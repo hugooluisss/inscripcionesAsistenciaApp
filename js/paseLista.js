@@ -78,8 +78,8 @@ TPaseLista = function(){
 					//destinationType: Camera.DestinationType.FILE_URI,
 					destinationType: Camera.DestinationType.DATA_URL,
 					encodingType: Camera.EncodingType.JPEG,
-					targetWidth: 300,
-					targetHeight: 300,
+					targetWidth: 400,
+					targetHeight: 400,
 					correctOrientation: true,
 					allowEdit: false
 				});
