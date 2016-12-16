@@ -95,7 +95,7 @@ TPaseLista = function(){
 				tx.executeSql("select * from justificacion where fecha = ? and idParticipante = ?", [$("#txtFechaJustificacion").val(), $("#participante").val()], function(tx, res){
 					if (res.rows.length > 0){
 						console.log(res.rows.item(0).comprobante);
-						if (res.rows.item(0).comprobante != null && res.rows.item(0).comprobante != '' and && res.rows.item(0).comprobante == undefined){
+						if (res.rows.item(0).comprobante != null && res.rows.item(0).comprobante != '' && res.rows.item(0).comprobante == undefined){
 							win.find("#vistaPrevia").find("img").remove();
 							win.find("#vistaPrevia").append($('<img class="img-responsive" src="data:image/jpeg;base64,' + res.rows.item(0).comprobante + '" />'));
 						}
@@ -331,6 +331,9 @@ TPaseLista = function(){
 
 function sendOficinas(elemento){
 	db.transaction(function(tx){
+		$("#over").css("display", 'block');
+		$("#fade").css("display", 'block');
+		
 		alertify.log("Se está construyendo el objeto de exportación");
 		tx.executeSql("select num_personal, calificacion, a.idParticipante, b.fecha, c.motivo, c.comprobante, c.fecha as fechaJust from participante a left join asistencia b on a.idParticipante = b.idParticipante left join justificacion c on a.idParticipante = c.idParticipante where idGrupo = ? order by nombre", [elemento.attr("idGrupo")], function(tx, res){
 			var datos = [];
@@ -374,7 +377,10 @@ function sendOficinas(elemento){
 				"idGrupo": elemento.attr("idGrupo"),
 				"movil": true
 			}, function(resp){
-				console.log(resp);
+				$("#over").css("display", 'none');
+				$("#fade").css("display", 'none');
+				
+				alertify.success("El proceso terminó con éxito");
 			}, "json");
 		}, errorDB);
 	});

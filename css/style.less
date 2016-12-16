@@ -146,3 +146,32 @@ nav.navbar{
 		background-color: @color_verde;
 	}
 }
+
+
+.fadebox {
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	z-index: 99991;
+	-moz-opacity: 90;
+	opacity: .90;
+	filter: alpha(opacity=90);
+}
+
+.overbox {
+	display: none;
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	z-index: 99992;
+	overflow: auto;
+	
+	text-align: center;
+	vertical-align: middle;
+}
