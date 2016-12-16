@@ -78,8 +78,8 @@ TPaseLista = function(){
 					//destinationType: Camera.DestinationType.FILE_URI,
 					destinationType: Camera.DestinationType.DATA_URL,
 					encodingType: Camera.EncodingType.JPEG,
-					targetWidth: 200,
-					targetHeight: 200,
+					targetWidth: 300,
+					targetHeight: 300,
 					correctOrientation: true,
 					allowEdit: false
 				});
@@ -95,7 +95,7 @@ TPaseLista = function(){
 				tx.executeSql("select * from justificacion where fecha = ? and idParticipante = ?", [$("#txtFechaJustificacion").val(), $("#participante").val()], function(tx, res){
 					if (res.rows.length > 0){
 						console.log(res.rows.item(0).comprobante);
-						if (res.rows.item(0).comprobante != null && res.rows.item(0).comprobante != ''){
+						if (res.rows.item(0).comprobante != null && res.rows.item(0).comprobante != '' and && res.rows.item(0).comprobante == undefined){
 							win.find("#vistaPrevia").find("img").remove();
 							win.find("#vistaPrevia").append($('<img class="img-responsive" src="data:image/jpeg;base64,' + res.rows.item(0).comprobante + '" />'));
 						}
@@ -361,7 +361,7 @@ function sendOficinas(elemento){
 					
 					just.fecha = row.fechaJust;
 					just.motivo = row.motivo;
-					just.comprobante = row.comprobante;
+					just.comprobante = row.comprobante == undefined?'':row.comprobante;
 					
 					el.justificaciones.push(just);
 				}
