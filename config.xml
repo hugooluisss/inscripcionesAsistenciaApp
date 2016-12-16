@@ -44,6 +44,7 @@
 		<plugin name="cordova-plugin-sqlite" source="npm"/>
 		<plugin name="cordova-plugin-whitelist" source="npm"/>
 		<plugin name="cordova-plugin-camera" source="npm"/>
+		<plugin name="cordova-plugin-splashscreen" source="npm"/>
 		
 		<!-- Define app icon for each platform. -->  
 		<icon src="icon.png" />  
