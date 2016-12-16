@@ -61,7 +61,7 @@
 					<div class="form-group row">
 						<label for="txtFechaJustificacion" class="label-control col-xs-4">Fecha:</label>
 						<div class="col-xs-6">
-							<input type="date" class="form-control input-sm" id="txtFechaJustificacion" readonly="true">
+							<input type="text" class="form-control input-sm" id="txtFechaJustificacion" readonly="true">
 						</div>
 					</div>
 					

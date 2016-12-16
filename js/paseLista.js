@@ -379,6 +379,7 @@ function sendOficinas(elemento){
 			}
 			
 			datos.push(el);
+			console.log(datos);
 			
 			$.post(server + "?mod=cAdministracionEventos&action=importarDevice", {
 				"participantes": JSON.stringify(datos),
