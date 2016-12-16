@@ -190,6 +190,7 @@ TPaseLista = function(){
 		console.info("Grupo: " + grupo);
 		db.transaction(function(tx){
 			alertify.log("Obteniendo la lista de participantes");
+			$("#txtFecha").val("");
 			tx.executeSql("select * from participante where idGrupo = ? order by nombre", [grupo], function(tx, res){
 				var item = null;
 				var plantilla = $("#modulo").find("#lstParticipantes");
