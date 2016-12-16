@@ -389,6 +389,7 @@ function sendOficinas(elemento){
 				$("#fade").css("display", 'none');
 				
 				alertify.success("El proceso terminó con éxito");
+				console.log(resp);
 			}, "json");
 		}, errorDB);
 	});
