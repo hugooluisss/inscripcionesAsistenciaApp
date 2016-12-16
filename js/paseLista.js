@@ -95,10 +95,9 @@ TPaseLista = function(){
 				tx.executeSql("select * from justificacion where fecha = ? and idParticipante = ?", [$("#txtFechaJustificacion").val(), $("#participante").val()], function(tx, res){
 					if (res.rows.length > 0){
 						console.log(res.rows.item(0).comprobante);
-						if (res.rows.item(0).comprobante != null && res.rows.item(0).comprobante != '' && res.rows.item(0).comprobante == undefined){
-							win.find("#vistaPrevia").find("img").remove();
+						win.find("#vistaPrevia").find("img").remove();
+						if (res.rows.item(0).comprobante != null && res.rows.item(0).comprobante != '' && res.rows.item(0).comprobante != undefined)
 							win.find("#vistaPrevia").append($('<img class="img-responsive" src="data:image/jpeg;base64,' + res.rows.item(0).comprobante + '" fuente="' + res.rows.item(0).comprobante + '" />'));
-						}
 						
 						win.find("#txtMotivo").val(res.rows.item(0).motivo);
 					}
@@ -112,7 +111,6 @@ TPaseLista = function(){
 				alertify.error("Se debe de agregar una foto del justificante");
 			}else{
 				db.transaction(function(tx){
-					alert(win.find("#vistaPrevia").find("img").attr("fuente"));
 					tx.executeSql("select * from justificacion where fecha = ? and idParticipante = ?", [$("#txtFechaJustificacion").val(), $("#participante").val()], function(tx, res){
 						if (res.rows.length == 0){
 							tx.executeSql("insert into justificacion(fecha, idParticipante, motivo, comprobante) values (?, ?, ?, ?)", [$("#txtFechaJustificacion").val(), $("#participante").val(), win.find("#txtMotivo").val(), win.find("#vistaPrevia").find("img").attr("fuente")], function(tx, res){
