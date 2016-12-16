@@ -78,8 +78,8 @@ TPaseLista = function(){
 					//destinationType: Camera.DestinationType.FILE_URI,
 					destinationType: Camera.DestinationType.DATA_URL,
 					encodingType: Camera.EncodingType.JPEG,
-					targetWidth: 300,
-					targetHeight: 300,
+					targetWidth: 250,
+					targetHeight: 250,
 					correctOrientation: true,
 					allowEdit: false
 				});
@@ -97,7 +97,7 @@ TPaseLista = function(){
 						console.log(res.rows.item(0).comprobante);
 						if (res.rows.item(0).comprobante != null && res.rows.item(0).comprobante != '' && res.rows.item(0).comprobante == undefined){
 							win.find("#vistaPrevia").find("img").remove();
-							win.find("#vistaPrevia").append($('<img class="img-responsive" src="data:image/jpeg;base64,' + res.rows.item(0).comprobante + '" />'));
+							win.find("#vistaPrevia").append($('<img class="img-responsive" src="data:image/jpeg;base64,' + res.rows.item(0).comprobante + '" fuente="' + res.rows.item(0).comprobante + '" />'));
 						}
 						
 						win.find("#txtMotivo").val(res.rows.item(0).motivo);
@@ -117,12 +117,18 @@ TPaseLista = function(){
 							tx.executeSql("insert into justificacion(fecha, idParticipante, motivo, comprobante) values (?, ?, ?, ?)", [$("#txtFechaJustificacion").val(), $("#participante").val(), win.find("#txtMotivo").val(), win.find("#vistaPrevia").find("img").attr("fuente")], function(tx, res){
 								alertify.success("Justificación guardada");
 								win.modal("hide");
-							}, errorDB);
+							}, function(tx, res){
+								alert(res);
+								alertify.error("Ocurrió un error al guardar la justificación");
+							});
 						}else
 							tx.executeSql("update justificacion set motivo = ?, comprobante = ? where idParticipante = ? and fecha = ?", [win.find("#txtMotivo").val(), win.find("#vistaPrevia").find("img").attr("fuente"), $("#participante").val(), $("#txtFechaJustificacion").val()], function(tx, res){
 								alertify.success("Justificación guardada");
 								win.modal("hide");
-							}, errorDB);
+							}, function(tx, res){
+								alert(res);
+								alertify.error("Ocurrió un error al guardar la justificación");
+							});
 					}, errorDB);
 				});
 			}
