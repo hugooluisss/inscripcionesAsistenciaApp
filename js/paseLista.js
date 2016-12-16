@@ -65,7 +65,7 @@ TPaseLista = function(){
 		
 		$("#getFoto").click(function(){
 			navigator.camera.getPicture(function(imageURI){
-					win.find("#vistaPrevia").remove();
+					win.find("#vistaPrevia").find("img").remove();
 					
 					var img = $("<img />");
 									
