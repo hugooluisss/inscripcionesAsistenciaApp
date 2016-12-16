@@ -80,8 +80,8 @@ TPaseLista = function(){
 					//destinationType: Camera.DestinationType.FILE_URI,
 					destinationType: Camera.DestinationType.DATA_URL,
 					encodingType: Camera.EncodingType.JPEG,
-					targetWidth: 250,
-					targetHeight: 250,
+					targetWidth: 400,
+					targetHeight: 400,
 					correctOrientation: true,
 					allowEdit: false
 				});
@@ -379,7 +379,6 @@ function sendOficinas(elemento){
 			}
 			
 			datos.push(el);
-			console.log(datos);
 			
 			$.post(server + "?mod=cAdministracionEventos&action=importarDevice", {
 				"participantes": JSON.stringify(datos),
@@ -390,7 +389,6 @@ function sendOficinas(elemento){
 				$("#fade").css("display", 'none');
 				
 				alertify.success("El proceso terminó con éxito");
-				console.log(resp);
 			}, "json");
 		}, errorDB);
 	});
