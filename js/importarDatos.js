@@ -166,7 +166,7 @@ TEvento = function(){
 					
 					tx.executeSql("delete from grupo where idGrupo = ?", [grupo.idGrupo], function(tx, res){
 						addLog("Se eliminó el grupo de la base de datos");
-						tx.executeSql("insert into grupo(idGrupo, nombre, sede, encargado) values (?, ?, ?, ?)", [grupo.idGrupo, grupo.nombre, grupo.sede, grupo.encargado], function(tx, res){
+						tx.executeSql("insert into grupo(idGrupo, nombre, sede, encargado) values (?, ?, ?, ?)", [grupo.idGrupo, grupo.nombre, grupo.nombreSede, grupo.encargado], function(tx, res){
 							addLog("Nuevo grupo creado");
 							
 							var cont = 0;
