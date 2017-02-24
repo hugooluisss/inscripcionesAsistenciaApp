@@ -41,11 +41,11 @@ var app = {
 			//db = openDatabase({name: "inter.db"});
 			db = window.sqlitePlugin.openDatabase({name: 'intersem.db', location: 1, androidDatabaseImplementation: 2});
 			console.log("Conexión desde phonegap OK");
-			crearBD(db);
+			crearBD(db, false);
 		}catch(err){
 			console.log("No se pudo crear la base de datos");
 			db = window.openDatabase("intersem.db", "1.0", "Just a Dummy DB", 200000);
-			crearBD(db);
+			crearBD(db, false);
 			console.log("Se inicio la conexión a la base para web");
 		}
 		

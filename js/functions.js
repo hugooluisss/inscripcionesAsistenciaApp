@@ -17,7 +17,7 @@ function reposition(modal) {
 * Crea la base de datos
 *
 */
-function crearBD(db, borrar=false){
+function crearBD(db, borrar){
 	db.transaction(function(tx){
 		if (borrar){
 			tx.executeSql("select fotografia from participante where not fotografia = ?", [''], function(tx, res){
