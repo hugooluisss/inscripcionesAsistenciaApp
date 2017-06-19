@@ -173,6 +173,7 @@ TEvento = function(){
 							$.each(datos, function(i, participante){
 								var url = encodeURI(decodeURIComponent(participante.foto));
 								// we need to access LocalFileSystem
+								
 								window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, function(fs){
 									// create the download directory is doesn't exist
 									fs.root.getFile(fs.root.fullPath + participante.num_personal + ".jpg", {create: true, exclusive: false}, function(fs){
@@ -193,9 +194,9 @@ TEvento = function(){
 										false);
 									});
 								});
+								
 							
-							
-								tx.executeSql("insert into participante (num_personal, idGrupo, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.nombreTrabajador, '', participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
+								tx.executeSql("insert into participante (num_personal, idGrupo, curp, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.curp, participante.nombreTrabajador, '', participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
 									addLog(participante.nombreTrabajador + " agregado a la base");
 									cont++;
 									if (cont >= datos.length){

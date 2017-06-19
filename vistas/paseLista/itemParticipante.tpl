@@ -10,6 +10,7 @@
 			<b>Plantel: </b><span campo="nombrePlantel" /> <br />
 			<b>Plaza: </b><span campo="plaza" /><br />
 			<b>Especialidad: </b><span campo="especialidad" /><br />
+			<b>CURP: </b><span campo="curp" /><br />
 		</p>
 		<div class="row">
 			<div class="col-xs-6">

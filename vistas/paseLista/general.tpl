@@ -28,11 +28,17 @@
 	</div>
 	<br /><br /><br /><br />
 	<div class="row" id="lstParticipantes"></div>
-	
+	<br /><br /><br /><br />
 	<a href="#" action="show" vista="grupos" class="botonPie">
 		<span class="fa-stack fa-2x in">
 			<i class="fa fa-circle fa-stack-2x"></i>
 			<i class="fa fa-arrow-left fa-stack-1x fa-inverse"></i>
+		</span>
+	</a>
+	<a href="#" class="botonPie" style="right: 80px" data-toggle="modal" data-target="#winAddParticipante">
+		<span class="fa-stack fa-2x in">
+			<i class="fa fa-circle fa-stack-2x"></i>
+			<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
 		</span>
 	</a>
 </div>
@@ -77,6 +83,53 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-success" id="btnGuardar">Guardar</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="winAddParticipante">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Agregar participante</h4>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-danger">
+					Mediante el presente el trabajador quedará registrado en el presente grupo, sin embargo, para ser válido este debe de ser aprobado por el departamento de docencia mediante el sistema "Inscripciones del IEBO". Recuerda notificarlo antes de entregar tu información
+				</div>
+				
+				<div class="form-group row">
+					<label for="txtNombre" class="label-control col-xs-4">Nombre:</label>
+					<div class="col-xs-8">
+						<input type="text" class="form-control input-sm" id="txtNombre">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="txtCURP" class="label-control col-xs-4">CURP:</label>
+					<div class="col-xs-6">
+						<input type="text" class="form-control input-sm" id="txtCURP">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" id="btnAgregarGuardar">Guardar</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+
+<input id="actionAux" type="hidden" />
+
+<div class="modal fade" id="winResultExportacion">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Resultado de la exportación</h4>
+			</div>
+			<div class="modal-body">
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

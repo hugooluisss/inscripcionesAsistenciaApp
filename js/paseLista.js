@@ -28,6 +28,31 @@ TPaseLista = function(){
 			autoSize: true
 		});
 		
+		
+		$("#winAddParticipante").on('shown.bs.modal', function (e) {
+			$("#winAddParticipante").find("#txtNombre").focus().val("");
+			$("#winAddParticipante").find("#txtCURP").val("");
+		});
+		
+		$("#winAddParticipante").find("#btnAgregarGuardar").click(function(){
+			if ($("#txtNombre").val() == ''){
+				alertify.error("Agrega el nombre del participante");
+				$("#txtNombre").focus();
+			}else if ($("#txtCURP").val() == ''){
+				alertify.error("Agrega la CURP del participante");
+				$("#txtCURP").focus();
+			}else{
+				db.transaction(function(tx){
+					tx.executeSql("insert into participante (num_personal, idGrupo, curp, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?,?)", ['', $("#grupo").val(), $("#txtCURP").val(), $("#txtNombre").val(), '', '', '', '', ''], function(tx, res){
+						
+						alertify.success("Trabajador agregado");
+						$("#winAddParticipante").modal("hide");
+						self.getParticipantes($("#grupo").val(), $("#actionAux").val());
+					}, errorDB);
+				});
+			}
+		});
+		
 		$("[action=show]").click(function(){
 			self.adminVistas($(this).attr("vista"));
 			
@@ -225,6 +250,7 @@ TPaseLista = function(){
 					if (res.rows.item(i).fotografia != '')
 						item.find("img.media-object").prop("src", res.rows.item(i).fotografia);
 					
+					$("#actionAux").val(action);
 					switch(action){
 						case 'paseLista':
 							item.find("[type=checkbox]").attr("idParticipante", res.rows.item(i).idParticipante);
@@ -343,7 +369,7 @@ function sendOficinas(elemento){
 		$("#fade").css("display", 'block');
 		
 		alertify.log("Se está construyendo el objeto de exportación");
-		tx.executeSql("select num_personal, calificacion, a.idParticipante, b.fecha, c.motivo, c.comprobante, c.fecha as fechaJust from participante a left join asistencia b on a.idParticipante = b.idParticipante left join justificacion c on a.idParticipante = c.idParticipante where idGrupo = ? order by nombre", [elemento.attr("idGrupo")], function(tx, res){
+		tx.executeSql("select num_personal, calificacion, a.curp, a.idParticipante, b.fecha, c.motivo, c.comprobante, c.fecha as fechaJust from participante a left join asistencia b on a.idParticipante = b.idParticipante left join justificacion c on a.idParticipante = c.idParticipante where idGrupo = ? order by nombre", [elemento.attr("idGrupo")], function(tx, res){
 			var datos = [];
 			var row = null;
 			var num_personal = null;
@@ -357,6 +383,7 @@ function sendOficinas(elemento){
 					
 					var el = new Object;
 					el.num_personal = row.num_personal;
+					el.curp = row.curp;
 					el.calificacion = row.calificacion;
 					el.asistencias = [];
 					el.justificaciones = [];
@@ -389,6 +416,17 @@ function sendOficinas(elemento){
 				$("#fade").css("display", 'none');
 				
 				alertify.success("El proceso terminó con éxito");
+				
+				$("#winResultExportacion").find(".modal-body").html("");
+
+				$.each(resp, function(i, el){
+					if (!el.band)
+						$("#winResultExportacion").find(".modal-body").append('<div class="alert alert-danger">' + el.msg + "</div>");
+					else
+						$("#winResultExportacion").find(".modal-body").append('<div class="alert alert-success">' + el.msg + "</div>");
+				});
+				
+				$("#winResultExportacion").modal();
 			}, "json");
 		}, errorDB);
 	});
