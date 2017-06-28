@@ -311,8 +311,8 @@ TPaseLista = function(){
 							});
 						break;
 						case 'setCalificacion'://Si es calificación final
-							item.find("[type=checkbox]").hide();
-							item.find("[type=checkbox]").parent().hide();
+							//item.find("[type=checkbox]").hide();
+							item.find("[type=checkbox]").parent().parent().hide();
 							item.find("a[action=justificar]").hide();
 							item.find(".calificacion").attr("idParticipante", res.rows.item(i).idParticipante);
 							
