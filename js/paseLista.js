@@ -74,7 +74,14 @@ TPaseLista = function(){
 					console.log("Total de asistencias registradas: " + res.rows.length);
 					var chk = null;
 					for (i = 0 ; i < res.rows.length ; i++){
-						chk = $("#modulo").find("#lstParticipantes").find("[idParticipante=" + res.rows.item(i).idParticipante + "]");
+						if (res.rows.item(i).retardo == 0){
+							chk = $("#modulo").find("#lstParticipantes").find(".btn-success [idParticipante=" + res.rows.item(i).idParticipante + "]");
+							chk.parent().parent().parent().parent().find(".btn-warning").hide();
+						}else{
+							chk = $("#modulo").find("#lstParticipantes").find(".btn-warning [idParticipante=" + res.rows.item(i).idParticipante + "]");
+							chk.parent().parent().parent().parent().find(".btn-success").hide();
+						}
+							
 						if (chk.length != 0){
 							chk.prop("checked", true);
 							chk.parent().parent().parent().parent().find("[action=justificar]").hide();
@@ -267,19 +274,24 @@ TPaseLista = function(){
 								}else{					
 									if (el.is(":checked"))
 										db.transaction(function(tx){
-											tx.executeSql("insert into asistencia (fecha, idParticipante) values (?, ?)", [$("#txtFecha").val(), el.attr("idParticipante")], function(tx, res){
+											tx.executeSql("insert into asistencia (fecha, idParticipante, retardo) values (?, ?, ?)", [$("#txtFecha").val(), el.attr("idParticipante"), el.val()], function(tx, res){
 												el.parent().parent().parent().parent().find("[action=justificar]").hide();
+												if (el.val() == 0)
+													el.parent().parent().parent().parent().find(".btn-warning").hide();
+												else
+													el.parent().parent().parent().parent().find(".btn-success").hide();
 												
 											}, function(tx, res){
 												console.log(res);
 												el.prop("checked", false);
-												alertify.error("Error al registrar la asistencia");
+												alertify.error("Error al registrar " + (el.val() == 0?"la Asistencia":"el Retardo"));
 											});
 										});
 									else
 										db.transaction(function(tx){
 											tx.executeSql("delete from asistencia where fecha = ? and idParticipante = ?", [$("#txtFecha").val(), el.attr("idParticipante")], function(tx, res){
 												el.parent().parent().parent().parent().find("[action=justificar]").show();
+												el.parent().parent().parent().parent().find(".checkbox").show();
 												
 											}, function(){
 												el.prop("checked", true);
@@ -369,7 +381,7 @@ function sendOficinas(elemento){
 		$("#fade").css("display", 'block');
 		
 		alertify.log("Se está construyendo el objeto de exportación");
-		tx.executeSql("select num_personal, calificacion, a.curp, a.idParticipante, b.fecha, c.motivo, c.comprobante, c.fecha as fechaJust from participante a left join asistencia b on a.idParticipante = b.idParticipante left join justificacion c on a.idParticipante = c.idParticipante where idGrupo = ? order by nombre", [elemento.attr("idGrupo")], function(tx, res){
+		tx.executeSql("select num_personal, calificacion, a.curp, a.idParticipante, b.fecha, c.motivo, c.comprobante, c.fecha as fechaJust, b.retardo from participante a left join asistencia b on a.idParticipante = b.idParticipante left join justificacion c on a.idParticipante = c.idParticipante where idGrupo = ? order by nombre", [elemento.attr("idGrupo")], function(tx, res){
 			var datos = [];
 			var row = null;
 			var num_personal = null;
@@ -386,6 +398,7 @@ function sendOficinas(elemento){
 					el.curp = row.curp;
 					el.calificacion = row.calificacion;
 					el.asistencias = [];
+					el.retardos = [];
 					el.justificaciones = [];
 					
 					num_personal = row.num_personal;
@@ -393,6 +406,9 @@ function sendOficinas(elemento){
 				
 				if (row.fecha != null)
 					el.asistencias.push(row.fecha);
+					
+				if (row.fecha != null && row.retardo == 1)
+					el.retardos.push(row.fecha);
 				
 				if (row.fechaJust != null){
 					var just = new Object;

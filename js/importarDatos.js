@@ -194,7 +194,6 @@ TEvento = function(){
 										false);
 									});
 								});
-								
 							
 								tx.executeSql("insert into participante (num_personal, idGrupo, curp, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.curp, participante.nombreTrabajador, '', participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
 									addLog(participante.nombreTrabajador + " agregado a la base");
