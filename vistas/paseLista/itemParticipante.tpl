@@ -13,17 +13,15 @@
 			<b>CURP: </b><span campo="curp" /><br />
 		</p>
 		<div class="row">
-			<div class="col-xs-4">
+			<div class="col-xs-6">
 				<span class="checkbox">
-				<a href="#" class="btn btn-danger" action="justificar" style="display: none">Justificación</a>
+					<a href="#" class="btn btn-danger" action="justificar" style="display: none"><small>Justificación</small></a>
 				</span>
-			</div>
-			<div class="col-xs-4 text-center">
 				<span class="checkbox btn btn-warning">
 					<label><input type="checkbox" value="1" idParticipante="">Retardo</label>  
 				</span>
 			</div>
-			<div class="col-xs-4 pull-right text-right">
+			<div class="col-xs-6 text-right">
 				<div class="col-xs-9 col-xs-offset-1">
 					<input type="number" class="calificacion form-control text-right">
 				</div>

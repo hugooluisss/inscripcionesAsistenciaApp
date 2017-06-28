@@ -97,7 +97,7 @@
 			</div>
 			<div class="modal-body">
 				<div class="alert alert-danger">
-					Mediante el presente el trabajador quedará registrado en el presente grupo, sin embargo, para ser válido este debe de ser aprobado por el departamento de docencia mediante el sistema "Inscripciones del IEBO". Recuerda notificarlo antes de entregar tu información
+					Mediante el presente el trabajador quedará registrado en el grupo, sin embargo, para que este procedimiento sea válido es necesario que se apruebe el departamento de docencia mediante el sistema "Inscripciones del IEBO". Recuerda notificarlo antes de entregar tu información.
 				</div>
 				
 				<div class="form-group row">
