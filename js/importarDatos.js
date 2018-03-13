@@ -174,7 +174,7 @@ TEvento = function(){
 								var url = encodeURI(decodeURIComponent(participante.foto));
 								// we need to access LocalFileSystem
 								
-								window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, function(fs){
+								window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs){
 									// create the download directory is doesn't exist
 									fs.root.getFile(fs.root.fullPath + participante.num_personal + ".jpg", {create: true, exclusive: false}, function(fs){
 										var filePath = fs.toURL();
