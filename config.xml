@@ -38,8 +38,8 @@
 		<!-- Core plugins -->  
 		<!-- Third party plugins -->  
 		<!-- A list of available plugins are available at https://build.phonegap.com/plugins -->
-		<!--<plugin name="cordova-plugin-file" source="npm"/>
-		<plugin name="cordova-plugin-file-transfer" source="npm"/>-->
+		<plugin name="cordova-plugin-file" source="npm"/>
+		<!--<plugin name="cordova-plugin-file-transfer" source="npm"/>-->
 		<plugin name="cordova-plugin-network-information" source="npm"/>
 		<plugin name="cordova-plugin-sqlite" source="npm"/>
 		<plugin name="cordova-plugin-whitelist" source="npm"/>
