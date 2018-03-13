@@ -16,8 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var server = "http://www.iebo.edu.mx/interno/inscripciones/"
-//var server = "http://172.10.22.5/inscripcionesBootstrap/"
+var server = "http://www.iebo.edu.mx/interno/inscripciones/";
+var server = "http://187.157.111.26/interno/inscripciones/";
+//var server = "http://172.10.22.5/inscripcionesBootstrap/";
 var db = null;
 
 var app = {
