@@ -255,7 +255,9 @@ TPaseLista = function(){
 					item.find(".calificacion").attr("anterior", res.rows.item(i).calificacion);
 					
 					if (res.rows.item(i).fotografia != '')
-						item.find("img.media-object").prop("src", res.rows.item(i).fotografia);
+						item.find("img.media-object").error(function(){
+							$(this).attr("src", "img/participante.jpg");
+						}).prop("src", res.rows.item(i).fotografia);
 					
 					$("#actionAux").val(action);
 					switch(action){
