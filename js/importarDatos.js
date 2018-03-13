@@ -168,45 +168,16 @@ TEvento = function(){
 						addLog("Se eliminó el grupo de la base de datos");
 						tx.executeSql("insert into grupo(idGrupo, nombre, sede, encargado) values (?, ?, ?, ?)", [grupo.idGrupo, grupo.nombre, grupo.nombreSede, grupo.encargado], function(tx, res){
 							addLog("Nuevo grupo creado");
-							
-							var cont = 0;
-							$.each(datos, function(i, participante){
-								var url = encodeURI(decodeURIComponent(participante.foto));
-								// we need to access LocalFileSystem
-								
-								window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs){
-									// create the download directory is doesn't exist
-									fs.root.getFile(fs.root.fullPath + participante.num_personal + ".jpg", {create: true, exclusive: false}, function(fs){
-										var filePath = fs.toURL();
-										var fileTransfer = new window.FileTransfer();
-										
-										fileTransfer.download(url, filePath, function(entry){
-										    console.log("Successfully downloaded file, full path is " + entry.fullPath);
-										    db.transaction(function(tx){
-										    	tx.executeSql("update participante set fotografia = ? where num_personal = ?", [fs.nativeURL, participante.num_personal], function(tx, res){
-										    	}, errorDB);
-										    }, errorDB);
-										},
-										function(error){
-											console.log(error);
-										    console.log("Some error " + error.code + " for " + url);
-										}, 
-										false);
-									});
-								});
-							
-								tx.executeSql("insert into participante (num_personal, idGrupo, curp, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.curp, participante.nombreTrabajador, '', participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
-									addLog(participante.nombreTrabajador + " agregado a la base");
-									cont++;
-									if (cont >= datos.length){
-										addLog("Proceso terminado");
-										addLog("----");
-										
-										alertify.success("El proceso de importación a terminado para este grupo");
-									}
-								}, errorDB);
-							});
-							
+							tx.executeSql("insert into participante (num_personal, idGrupo, curp, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.curp, participante.nombreTrabajador, participante.foto, participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
+								addLog(participante.nombreTrabajador + " agregado a la base");
+								cont++;
+								if (cont >= datos.length){
+									addLog("Proceso terminado");
+									addLog("----");
+									
+									alertify.success("El proceso de importación a terminado para este grupo");
+								}
+							}, errorDB);
 						}, errorDB);
 					}, errorDB);
 				}, errorDB);
