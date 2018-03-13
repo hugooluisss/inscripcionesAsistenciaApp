@@ -155,7 +155,43 @@ TEvento = function(){
 			"grupo": grupo.idGrupo
 		}, function(datos){
 			addLog('Se recibieron ' + datos.length + ' registros de inscripción desde el servidor');
+			var cont = 0;
+			db.transaction(function(tx){
+				tx.executeSql("select idParticipante, fotografia from participante where idGrupo = ?", [grupo.idGrupo], function(tx, res){
+					for(var i = 0 ; i < res.rows.length ; i++){
+						tx.executeSql("delete from asistencia where idParticipante = ?", [res.rows.item(i).idParticipante]);
+						tx.executeSql("delete from justificacion where idParticipante = ?", [res.rows.item(i).idParticipante]);
+						tx.executeSql("delete from participante where idParticipante = ?", [res.rows.item(i).idParticipante]);
+					}
+				});
+				
+				tx.executeSql("delete from grupo where idGrupo = ?", [grupo.idGrupo]);
+				
+				tx.executeSql("insert into grupo(idGrupo, nombre, sede, encargado) values (?, ?, ?, ?)", [grupo.idGrupo, grupo.nombre, grupo.nombreSede, grupo.encargado], function(tx, res){
+					addLog("Nuevo grupo creado");
+					
+					$.each(datos, function(i, participante){
+						tx.executeSql("insert into participante (num_personal, idGrupo, curp, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.curp, participante.nombreTrabajador, participante.foto, participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
+						
+							$.get(participante.foto, function(resp){
+								console.log(resp);
+							})
+						
+							addLog(participante.nombreTrabajador + " agregado a la base");
+								cont++;
+								if (cont >= datos.length){
+									addLog("Proceso terminado");
+									addLog("----");
+									
+									alertify.success("El proceso de importación a terminado para este grupo");
+								}
+						});
+					});
+
+				});
+			});
 			
+			/*
 			db.transaction(function(tx){
 				tx.executeSql("select idParticipante, fotografia from participante where idGrupo = ?", [grupo.idGrupo], function(tx, res){
 					for(var i = 0 ; i < res.rows.length ; i++){
@@ -168,6 +204,8 @@ TEvento = function(){
 						addLog("Se eliminó el grupo de la base de datos");
 						tx.executeSql("insert into grupo(idGrupo, nombre, sede, encargado) values (?, ?, ?, ?)", [grupo.idGrupo, grupo.nombre, grupo.nombreSede, grupo.encargado], function(tx, res){
 							addLog("Nuevo grupo creado");
+							
+							
 							tx.executeSql("insert into participante (num_personal, idGrupo, curp, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.curp, participante.nombreTrabajador, participante.foto, participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
 								addLog(participante.nombreTrabajador + " agregado a la base");
 								cont++;
@@ -182,7 +220,7 @@ TEvento = function(){
 					}, errorDB);
 				}, errorDB);
 			});
-			
+			*/
 		}, "json");
 	}
 }
