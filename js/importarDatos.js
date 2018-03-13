@@ -174,7 +174,7 @@ TEvento = function(){
 						tx.executeSql("insert into participante (num_personal, idGrupo, curp, nombre, fotografia, idPlantel, nombrePlantel, plaza, especialidad) values (?,?,?,?,?,?,?,?,?)", [participante.num_personal, grupo.idGrupo, participante.curp, participante.nombreTrabajador, participante.foto, participante.plantel, participante.nombrePlantel, participante.plaza, participante.especialidad == null?'':participante.especialidad], function(tx, res){
 						
 							$.get(participante.foto, function(resp){
-								console.log(resp);
+								tx.executeSql("update participante set fotografia = ? where num_personal = ?", [resp, participante.num_personal]);
 							})
 						
 							addLog(participante.nombreTrabajador + " agregado a la base");
