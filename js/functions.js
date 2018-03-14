@@ -20,12 +20,13 @@ function reposition(modal) {
 function crearBD(db, borrar){
 	db.transaction(function(tx){
 		if (borrar){
-			
+			/*
 			tx.executeSql("select fotografia from participante where not fotografia = ?", [''], function(tx, res){
 				for(var i = 0 ; i < res.rows.length ; i++){
 					if (res.rows.item(i).fotografia != ''){
 						var uri = res.rows.item(i).fotografia;
 						console.info(uri);
+						
 						resolveLocalFileSystemURL(uri, function(fileEntry){
 							fileEntry.remove(function(entry){
 								console.log(uri + " Removal succeeded");
@@ -36,7 +37,7 @@ function crearBD(db, borrar){
 					}
 				}
 			}, errorDB);
-			
+			*/
 			tx.executeSql('DROP TABLE IF EXISTS grupo');
 			tx.executeSql('DROP TABLE IF EXISTS participante');
 			tx.executeSql('DROP TABLE IF EXISTS asistencia');

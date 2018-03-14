@@ -88,7 +88,7 @@ function clickMenu(){
 }
 
 $(document).ready(function(){
-	app.onDeviceReady();
+	//app.onDeviceReady();
 	
 	$.ajaxSetup({
 		error: function( jqXHR, textStatus, errorThrown ) {
@@ -101,4 +101,4 @@ $(document).ready(function(){
 
 });
 
-//app.initialize();
+app.initialize();

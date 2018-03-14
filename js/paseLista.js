@@ -96,27 +96,32 @@ TPaseLista = function(){
 		});
 		
 		$("#getFoto").click(function(){
-			navigator.camera.getPicture(function(imageURI){
-					win.find("#vistaPrevia").find("img").remove();
-					
-					var img = $("<img />");
-									
-					win.find("#vistaPrevia").append(img);
-					
-					img.attr("src", "data:image/jpeg;base64," + imageURI);
-					img.attr("fuente", imageURI);
-				}, function(message){
-					alertify.error("Ocurrio un error al subir la imagen");
-				}, { 
-					quality: 100,
-					//destinationType: Camera.DestinationType.FILE_URI,
-					destinationType: Camera.DestinationType.DATA_URL,
-					encodingType: Camera.EncodingType.JPEG,
-					targetWidth: 400,
-					targetHeight: 400,
-					correctOrientation: true,
-					allowEdit: false
-				});
+			if (navigator.camera != undefined){
+				navigator.camera.getPicture(function(imageURI){
+						win.find("#vistaPrevia").find("img").remove();
+						
+						var img = $("<img />");
+										
+						win.find("#vistaPrevia").append(img);
+						
+						img.attr("src", "data:image/jpeg;base64," + imageURI);
+						img.attr("fuente", imageURI);
+					}, function(message){
+						alertify.error("Ocurrio un error al subir la imagen");
+					}, { 
+						quality: 100,
+						//destinationType: Camera.DestinationType.FILE_URI,
+						destinationType: Camera.DestinationType.DATA_URL,
+						encodingType: Camera.EncodingType.JPEG,
+						targetWidth: 400,
+						targetHeight: 400,
+						correctOrientation: true,
+						allowEdit: false
+					});
+			}else{
+				alertify.error("No se pudo iniciar la cámara");
+				console.log("No se pudo inicializar la cámara");
+			}
 		});
 		
 		
