@@ -38,10 +38,7 @@
 		<!-- Core plugins -->  
 		<!-- Third party plugins -->  
 		<!-- A list of available plugins are available at https://build.phonegap.com/plugins -->
-		<plugin name="cordova-plugin-file" source="npm">
-			<variable name="CAMERA_USAGE_DESCRIPTION" value="La app necesita tomar fotos de la camara para completar el reporte del transportista" />
-			<variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="El reporte puede estar en una imagen en la galeria, es por esto que la app necesita acceso" />
-		</plugin>
+		<plugin name="cordova-plugin-file" source="npm" />
 		<!--<plugin name="cordova-plugin-file-transfer" source="npm"/>-->
 		<plugin name="cordova-plugin-camera" source="npm"/>
 		<plugin name="cordova-plugin-network-information" source="npm"/>
@@ -85,12 +82,22 @@
 			<string>100</string>  
 		</gap:config-file>
 		-->
+		
+		
+		<gap:config-file platform="ios" parent="NSCameraUsageDescription">
+			<string>Para la toma de la fotografia</string>
+		</gap:config-file>
+		
+		
+		
+		
+		
 		<!--  
 		 Define access to external domains.  
 		 <access />      - a blank access tag denies access to all external resources.  
 		 <access origin="*" /> - a wildcard access tag allows access to all external resource.  
 		 Otherwise, you can specify specific domains:  
-		-->  
+		--> 
 		<access origin="*"/>  
 			<!--  
 			<access origin="http://phonegap.com" />          - allow any secure requests to http://phonegap.com/  
