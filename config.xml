@@ -43,10 +43,10 @@
 			<variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="El reporte puede estar en una imagen en la galeria, es por esto que la app necesita acceso" />
 		</plugin>
 		<!--<plugin name="cordova-plugin-file-transfer" source="npm"/>-->
+		<plugin name="cordova-plugin-camera" source="npm"/>
 		<plugin name="cordova-plugin-network-information" source="npm"/>
 		<plugin name="cordova-plugin-sqlite" source="npm"/>
 		<plugin name="cordova-plugin-whitelist" source="npm"/>
-		<plugin name="cordova-plugin-camera" source="npm"/>
 		<plugin name="cordova-plugin-media-capture" />
 		<plugin name="cordova-plugin-splashscreen" source="npm"/>
 		
