@@ -74,6 +74,10 @@ nav.navbar{
 
 #modulo{
 	margin-top: 55px;
+	&.container{
+		margin-left: inherit;
+		margin-right: inherit;
+	}
 	
 	.page-header{
 		margin-top: 0px;
@@ -111,14 +115,28 @@ nav.navbar{
 	
 	.fixed{
 		position: fixed;
-		width: 95%;
+		width: 100%;
 		background: white;
 		z-index: 999;
 	}
 	
 	.media{
+		font-size: 12px;
 		img.media-object{
-			width: 100px;
+			width: 45px;
+		}
+		
+		span{
+			&.checkbox{
+				margin-top: 0px;
+			}
+		}
+		
+		input[type=number]{
+			width: 55px;
+			height: 25px;
+			font-size: 12px;
+			margin-right: 10px;
 		}
 	}
 }

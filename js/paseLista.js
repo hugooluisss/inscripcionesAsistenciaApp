@@ -175,7 +175,6 @@ TPaseLista = function(){
 	
 	this.getGrupos = function(){		
 		db.transaction(function(tx){
-			alertify.log("Obteniendo la lista de grupos");
 			tx.executeSql("select * from grupo", [], function(tx, res){
 				var item = null;
 				var plantilla = $("#modulo").find("[view=grupos]").find(".list-group");
@@ -218,8 +217,6 @@ TPaseLista = function(){
 						alertify.confirm("Esta acción enviará los datos a oficinas centrales y no podrán ser cambiadas, ¿estás seguro?", function (e) {
 							if (e) {
 								sendOficinas(item);
-							}else{ 
-								alertify.error("Has pulsado '" + alertify.labels.cancel + "'");
 							}
 						});
 					});
@@ -233,7 +230,6 @@ TPaseLista = function(){
 	this.getParticipantes = function(grupo, action){
 		console.info("Grupo: " + grupo);
 		db.transaction(function(tx){
-			alertify.log("Obteniendo la lista de participantes");
 			$("#txtFecha").val("");
 			tx.executeSql("select * from participante where idGrupo = ? order by nombre", [grupo], function(tx, res){
 				var item = null;
@@ -263,6 +259,21 @@ TPaseLista = function(){
 						item.find("img.media-object").error(function(){
 							$(this).attr("src", "img/participante.jpg");
 						}).prop("src", res.rows.item(i).fotografia);
+					
+					item.find("img.media-object").attr("datos", JSON.stringify(res.rows.item(i)));
+					
+					item.find("img.media-object").click(function(e){
+						console.log(e);
+						var data = JSON.parse($(e.currentTarget).attr("datos"));
+						
+						$.each(data, function(campo, valor){
+							$("#winDetalleTrabajador").find("[campo=" + campo + "]").text(valor);
+						});
+						
+						$("#winDetalleTrabajador").find("img.media-object").error(function(){
+							$(this).attr("src", "img/participante.jpg");
+						}).prop("src", data.fotografia);
+					});
 					
 					$("#actionAux").val(action);
 					switch(action){

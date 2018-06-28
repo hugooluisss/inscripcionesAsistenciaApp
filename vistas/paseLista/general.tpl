@@ -134,3 +134,25 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div>
+
+
+<div class="modal fade" id="winDetalleTrabajador">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Participante</h4>
+			</div>
+			<div class="modal-body">
+				<center><img class="media-object img-circle" src="img/participante.jpg" alt="Participante" campo="fotografia"></center>
+				<hr />
+				<b>Nombre: </b><span campo="nombre" /> <br />
+				<b>Plantel: </b><span campo="nombrePlantel" /> <br />
+				<b>Plaza: </b><span campo="plaza" /><br />
+				<b>Especialidad: </b><span campo="especialidad" /><br />
+				<b>CURP: </b><span campo="curp" /><br />
+			</div>
+			
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
